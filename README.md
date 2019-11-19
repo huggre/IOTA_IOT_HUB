@@ -9,6 +9,8 @@ My README.md
 * pip install Flask-Migrate
 * pip install Flask-Table
 
+* pip install paho-mqtt
+
 Some proposed changes...
 
 Git tutorial
