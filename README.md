@@ -9,3 +9,5 @@ My README.md
 * pip install Flask-Migrate
 * pip install Flask-Table
 
+Some proposed changes...
+
