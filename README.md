@@ -8,7 +8,9 @@ My README.md
 * pip install Flask-SQLAlchemy
 * pip install Flask-Migrate
 * pip install Flask-Table
---
+
+
+
 * pip install paho-mqtt
 
 Some proposed changes...
