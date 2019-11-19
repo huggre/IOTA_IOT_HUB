@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>My transactions</h1></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="transactions">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-2">Tag</th>
+				<th class="col-md-2">Asset</th>
+				<th class="col-md-2">Sensor</th>
+				<th class="col-md-2">Timestamp</th>
+				<th class="col-md-1">Value</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for transaction in transactions %}
+			<tr>
+				<td>{{ transaction.transaction_id }}</td>
+				<td><a href="/tag_details/{{ transaction.tag_id }}">{{ transaction.tag_name }}</a></td>
+				<td><a href="/asset_details/{{ transaction.asset_id }}">{{ transaction.asset_name }}</a></td>
+				<td><a href="/sensor_details/{{ transaction.sensor_id }}">{{ transaction.sensor_name }}</a></td>
+				<td>{{ transaction.transaction_timestamp }}</td>
+				<td>{{ transaction.transaction_value }}</td>			
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>My tags</h1></td>
+				<td align="right"><a href="{{ url_for('new_tag') }}" class="btn btn-primary">New tag</a></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="tags">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-2">Name</th>
+				<th class="col-md-2">Type</th>
+				<th class="col-md-2">Account</th>
+				<th class="col-md-2">UID</th>
+				<th class="col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for tag in tags %}
+			<tr>
+				<td>{{ tag.tag_id }}</td>
+				<td><a href="/tag_details/{{ tag.tag_id }}">{{ tag.tag_name }}</a></td>
+				<td>{{ tag.tag_type }}</td>
+				<td><a href="/account_details/{{ tag.tag_account_id }}">{{ tag.tag_account_name }}</a></td>
+				<td>{{ tag.tag_UID }}</td>
+				<td align="right"><a href="/edit_tag/{{ tag.tag_id }}" class="btn btn-primary">Edit</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

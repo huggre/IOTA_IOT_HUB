@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>My deposits</h1></td>
+				<td align="right"><a href="{{ url_for('new_deposit') }}" class="btn btn-primary">New deposit</a></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="tags">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-2">Account</th>
+				<th class="col-md-1">Amount</th>
+				<th class="col-md-2">Timestamp</th>				
+				<th class="col-md-4"></th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for deposit in deposits %}
+			<tr>
+				<td>{{ deposit.deposit_id }}</td>
+				<td><a href="/account_details/{{ deposit.deposit_account_id }}">{{ deposit.deposit_account_name }}</a></td>
+				<td>{{ deposit.deposit_value }}</td>
+				<td>{{ deposit.deposit_timestamp }}</td>
+				<td></td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

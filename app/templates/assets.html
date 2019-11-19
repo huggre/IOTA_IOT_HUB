@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>My assets</h1></td>
+				<td align="right"><a href="{{ url_for('new_asset') }}" class="btn btn-primary">New asset</a></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="assets">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-2">Name</th>
+				<th class="col-md-2">Type</th>
+				<th class="col-md-2">Account</th>
+				<th class="col-md-2">Price</th>
+				<th class="col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for asset in assets %}
+			<tr>
+				<td>{{ asset.asset_id }}</td>
+				<td><a href="/asset_details/{{ asset.asset_id }}">{{ asset.asset_name }}</a></td>
+				<td>{{ asset.asset_type }}</td>
+				<td><a href="/account_details/{{ asset.asset_account_id }}">{{ asset.asset_account_name }}</a></td>
+				<td>{{ asset.asset_price }}</td>
+				<td align="right"><a href="/edit_asset/{{ asset.asset_id }}" class="btn btn-primary">Edit</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

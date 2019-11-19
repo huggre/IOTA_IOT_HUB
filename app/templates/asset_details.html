@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<head>{{mymap.js}}</head>
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>Asset details</h1></td>
+			</tr>
+			<tr>
+				<td>{{mymap.html}}</td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="asset_details">
+			<thead>
+			<tr>
+				<th class="col-md-2">Attribute</th>
+				<th class="col-md-8">Value</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>ID</td>
+				<td>{{ asset.asset_id }}</td>
+			</tr>
+			<tr>
+				<td>Created</td>
+				<td>{{ asset.asset_created }}</td>
+			</tr>
+			<tr>
+				<td>Modified</td>
+				<td>{{ asset.asset_modified }}</td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td>{{ asset.asset_name }}</td>
+			</tr>
+			<tr>
+				<td>Type</td>
+				<td>{{ asset.asset_type }}</td>
+			</tr>
+			<tr>
+				<td>City</td>
+				<td>{{ asset.asset_city }}</td>
+			</tr>
+			<tr>
+				<td>Country</td>
+				<td>{{ asset.asset_country }}</td>
+			</tr>
+			<tr>
+				<td>Latitude</td>
+				<td>{{ asset.asset_latitude }}</td>
+			</tr>
+
+			<tr>
+				<td>Longitude</td>
+				<td>{{ asset.asset_longitude }}</td>
+			</tr>
+			<tr>
+				<td>Price</td>
+				<td>{{ asset.asset_price }}</td>
+			</tr>
+			<tr>
+				<td>Owner</td>
+				<td><a href="/member_details/{{ asset.asset_owner_id }}">{{ asset.asset_owner_name }}</a></td>
+			</tr>
+			<tr>
+				<td>Account</td>
+				<td><a href="/account_details/{{ asset.asset_account_id }}">{{ asset.asset_account_name }}</a></td>
+			</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

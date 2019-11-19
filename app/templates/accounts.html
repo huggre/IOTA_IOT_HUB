@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>My accounts</h1></td>
+				<td align="right"><a href="{{ url_for('new_account') }}" class="btn btn-primary">New account</a></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="tags">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-2">Name</th>
+				<th class="col-md-6">Balance</th>
+				<th class="col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for account in accounts %}
+			<tr>
+				<td>{{ account.account_id }}</td>
+				<td><a href="/account_details/{{ account.account_id }}">{{ account.account_name }}</a></td>
+				<td>{{ account.account_balance }}</td>
+				<td align="right"><a href="/edit_account/{{ account.account_id }}" class="btn btn-primary">Edit</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>Sensor details</h1></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="sensor_details">
+			<thead>
+			<tr>
+				<th class="col-md-2">Attribute</th>
+				<th class="col-md-8">Value</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>ID</td>
+				<td>{{ sensor.sensor_id }}</td>
+			</tr>
+			<tr>
+				<td>Created</td>
+				<td>{{ sensor.sensor_created }}</td>
+			</tr>
+			<tr>
+				<td>Modified</td>
+				<td>{{ sensor.sensor_modified }}</td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td>{{ sensor.sensor_name }}</td>
+			</tr>
+			<tr>
+				<td>Type</td>
+				<td>{{ sensor.sensor_type }}</td>
+			</tr>
+			<tr>
+				<td>UID</td>
+				<td>{{ sensor.sensor_UID }}</td>
+			</tr>
+			<tr>
+				<td>Parent asset</td>
+				<td><a href="/asset_details/{{ sensor.parent_asset_id }}">{{ sensor.parent_asset_name }}</a></td>
+				</tr>
+			<tr>
+				<td>Owner</td>
+				<td><a href="/member_details/{{ sensor.sensor_owner_id }}">{{ sensor.sensor_owner_name }}</a></td>
+			</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}

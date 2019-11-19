@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-10">
+		<table style="width:100%">
+			<tr>
+				<td><h1>Account details</h1></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="asset_details">
+			<thead>
+			<tr>
+				<th class="col-md-2">Attribute</th>
+				<th class="col-md-8">Value</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>ID</td>
+				<td>{{ account.account_id }}</td>
+			</tr>
+			<tr>
+				<td>Created</td>
+				<td>{{ account.account_created }}</td>
+			</tr>
+			<tr>
+				<td>Modified</td>
+				<td>{{ account.account_modified }}</td>
+			</tr>
+			<tr>
+				<td>Name</td>
+				<td>{{ account.account_name }}</td>
+			</tr>
+			<tr>
+				<td>Balance</td>
+				<td>{{ account.account_balance }}</td>
+			</tr>
+			<tr>
+				<td>Owner</td>
+				<td><a href="/member_details/{{ account.account_owner_id }}">{{ account.account_owner_name }}</a></td>
+			</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+{% endblock %}
