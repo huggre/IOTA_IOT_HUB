@@ -1,5 +1,6 @@
-* IotaGo dependencies
+My README.md
 
+* IotaGo dependencies
 pip install Flask
 pip install SQLAlchemy
 pip install Flask-GoogleMaps
@@ -9,8 +10,3 @@ pip install Flask-Bootstrap
 pip install Flask-SQLAlchemy
 pip install Flask-Migrate
 pip install Flask-Table
-
-Change test
-
-
-
