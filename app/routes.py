@@ -1,3 +1,6 @@
+
+from get_deposit_address import get_dep_addr
+
 #from datetime import datetime
 from sqlalchemy.sql import func
 
@@ -98,6 +101,39 @@ def index():
         )
 
     return render_template('index.html',title="Home", mymap=mymap)
+
+@app.route('/asset_map')
+def asset_map():
+
+    assets = (db.session.query(tbl_assets, tbl_asset_types)
+        .join(tbl_asset_types)
+        .add_columns(tbl_assets.id.label('asset_id'), 
+        tbl_assets.name.label('asset_name'), 
+        tbl_assets.latitude.label('asset_latitude'), 
+        tbl_assets.longitude.label('asset_longitude'), 
+        tbl_assets.price.label('asset_price'), 
+        tbl_asset_types.name.label('asset_type'))
+        )
+
+    my_markers=[]
+    for asset in assets:
+        marker_data = (asset.asset_latitude, asset.asset_longitude, asset.asset_name, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        my_markers.append(marker_data)
+
+    mymap = Map(
+        identifier="mymap",
+        #style=(
+        #    "height:500px;"
+        #    "width:500px;"
+        #    "margin:0;"
+        #),
+        lat=58.252785,
+        lng=8.071328,
+        markers=my_markers,
+        center_on_user_location=True
+        )
+
+    return render_template('asset_map.html',title="Asset Map", mymap=mymap)
 
 @app.route('/map')
 #@login_required
@@ -205,6 +241,9 @@ def new_deposit():
 
     # Add user accounts to SelectField
     form.account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
+
+    # Get the next available address from master seed
+    form.deposit_address.data = get_dep_addr()
 
     if form.validate_on_submit():
         

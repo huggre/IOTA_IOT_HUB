@@ -71,6 +71,7 @@ class TagForm(FlaskForm):
 class DepositForm(FlaskForm):
     account = SelectField('Account', coerce=int)
     #value = StringField('Value', validators=[DataRequired()])
+    deposit_address = StringField('IOTA Deposit Address', validators=[DataRequired()])
     value = FloatField('Amount', default='0.0', validators=[DataRequired()])
     submit = SubmitField('Submit')
 

@@ -1,7 +1,7 @@
 
 from datetime import date, datetime
 
-import paho.mqtt.client as mqtt
+# import paho.mqtt.client as mqtt
 
 from sqlalchemy.sql import func
 
@@ -128,9 +128,23 @@ def new_trans(mqtt_msg):
     db.session.commit()
 
 
-mqtt_msg = 'STINEUID,XXX'
+mqtt_msg = 'NO 1234567,XXX'
 
-new_trans(mqtt_msg)
+#new_trans(mqtt_msg)
+
+trans = tbl_transactions()
+trans.mqtt_tag_UID = "NO 1234567"
+trans.mqtt_sensor_UID = "CCC"
+trans.tag_id = 3
+trans.tag_account_id = 4
+trans.sensor_id = 3
+trans.asset_id = 4
+trans.asset_account_id = 4
+trans.timestamp = func.now()
+trans.transaction_value = 10
+db.session.add(trans)
+
+db.session.commit()
 
 #client = mqtt.Client()
 #client.on_connect = on_connect

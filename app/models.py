@@ -155,6 +155,7 @@ class tbl_accounts(db.Model):
 class tbl_deposits(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     account = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
+    transaction_hash = db.Column(db.String(128))
     value = db.Column(db.Float)
     timestamp = db.Column(db.DateTime, index=True, default=func.now())
     owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
