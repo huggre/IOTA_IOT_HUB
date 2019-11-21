@@ -79,7 +79,7 @@ def new_trans(mqtt_msg):
 
     # Get sensor data from DB
     sensors = (db.session.query(tbl_sensors, tbl_assets, tbl_accounts)
-        .join(tbl_assets)
+        .join(tbl_assets, tbl_sensors.parent_asset == tbl_assets.id)
         .join(tbl_accounts)
         .filter(tbl_sensors.UID == mqtt_sensor_UID)
         .add_columns(tbl_sensors.id.label('sensor_id'), tbl_assets.id.label('asset_id'), tbl_accounts.id.label('asset_account_id'), tbl_accounts.balance.label('asset_account_balance'), tbl_assets.price.label('asset_price'))
@@ -96,12 +96,11 @@ def new_trans(mqtt_msg):
         new_trans_error(mqtt_msg, 'Sensor UID not found')
         return
 
-    # Check that there is enough funds
+    # Check that there is enough funds to pay for the transaction
     if tag_account_balance < asset_price:
         valid_trans = False
         new_trans_error(mqtt_msg, 'Insufficient funding')
         return
-
 
     # Subtract transaction value from tag account
     sender_account = tbl_accounts.query.filter_by(id=tag_account_id).first_or_404()
@@ -113,8 +112,6 @@ def new_trans(mqtt_msg):
 
     # Add new transaction to the transactions table
     trans = tbl_transactions()
-    trans.mqtt_tag_UID = mqtt_tag_UID
-    trans.mqtt_sensor_UID = mqtt_sensor_UID
     trans.tag_id = tag_id
     trans.tag_account_id = tag_account_id
     trans.sensor_id = sensor_id
@@ -128,23 +125,24 @@ def new_trans(mqtt_msg):
     db.session.commit()
 
 
-mqtt_msg = 'NO 1234567,XXX'
+# Syntax: TAG_UID, SENSOR_UID
+mqtt_msg = 'NO XXX,CAM10'
 
-#new_trans(mqtt_msg)
+new_trans(mqtt_msg)
 
-trans = tbl_transactions()
-trans.mqtt_tag_UID = "NO 1234567"
-trans.mqtt_sensor_UID = "CCC"
-trans.tag_id = 3
-trans.tag_account_id = 4
-trans.sensor_id = 3
-trans.asset_id = 4
-trans.asset_account_id = 4
-trans.timestamp = func.now()
-trans.transaction_value = 10
-db.session.add(trans)
+#trans = tbl_transactions()
+#trans.mqtt_tag_UID = "NO 1234567"
+#trans.mqtt_sensor_UID = "CCC"
+#trans.tag_id = 3
+#trans.tag_account_id = 4
+#trans.sensor_id = 3
+#trans.asset_id = 4
+#trans.asset_account_id = 4
+#trans.timestamp = func.now()
+#trans.transaction_value = 10
+#db.session.add(trans)
 
-db.session.commit()
+#db.session.commit()
 
 #client = mqtt.Client()
 #client.on_connect = on_connect

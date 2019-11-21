@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 2f9fe855ccac
+Revision ID: 67bae6c9d0a4
 Revises: 
-Create Date: 2019-02-28 13:52:05.421354
+Create Date: 2019-11-21 10:28:55.397962
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '2f9fe855ccac'
+revision = '67bae6c9d0a4'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -28,6 +28,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=True),
+    sa.Column('phone', sa.String(length=64), nullable=True),
     sa.Column('password_hash', sa.String(length=128), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
@@ -37,6 +38,7 @@ def upgrade():
     op.create_index(op.f('ix_tbl_members_email'), 'tbl_members', ['email'], unique=True)
     op.create_index(op.f('ix_tbl_members_modified'), 'tbl_members', ['modified'], unique=False)
     op.create_index(op.f('ix_tbl_members_name'), 'tbl_members', ['name'], unique=True)
+    op.create_index(op.f('ix_tbl_members_phone'), 'tbl_members', ['phone'], unique=True)
     op.create_table('tbl_sensor_types',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
@@ -72,6 +74,10 @@ def upgrade():
     op.create_table('tbl_assets',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
+    sa.Column('city', sa.String(length=64), nullable=True),
+    sa.Column('country', sa.String(length=64), nullable=True),
+    sa.Column('latitude', sa.Float(), nullable=True),
+    sa.Column('longitude', sa.Float(), nullable=True),
     sa.Column('price', sa.Float(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
@@ -143,8 +149,6 @@ def upgrade():
     op.create_index(op.f('ix_tbl_sensors_modified'), 'tbl_sensors', ['modified'], unique=False)
     op.create_table('tbl_transactions',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('mqtt_sensor_UID', sa.String(length=64), nullable=True),
-    sa.Column('mqtt_tag_UID', sa.String(length=64), nullable=True),
     sa.Column('tag_id', sa.Integer(), nullable=True),
     sa.Column('tag_account_id', sa.Integer(), nullable=True),
     sa.Column('sensor_id', sa.Integer(), nullable=True),
@@ -191,6 +195,7 @@ def downgrade():
     op.drop_table('tbl_tag_types')
     op.drop_index(op.f('ix_tbl_sensor_types_name'), table_name='tbl_sensor_types')
     op.drop_table('tbl_sensor_types')
+    op.drop_index(op.f('ix_tbl_members_phone'), table_name='tbl_members')
     op.drop_index(op.f('ix_tbl_members_name'), table_name='tbl_members')
     op.drop_index(op.f('ix_tbl_members_modified'), table_name='tbl_members')
     op.drop_index(op.f('ix_tbl_members_email'), table_name='tbl_members')

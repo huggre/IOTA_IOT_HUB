@@ -1,5 +1,6 @@
 from flask_table import Table, Col, ButtonCol, LinkCol
  
+# Define Accounts table
 class AccountsTable(Table):
     id = Col('Id', show=False)
     name = Col('Name')
@@ -10,6 +11,7 @@ class AccountsTable(Table):
     edit=LinkCol('Edit','edit_account',url_kwargs=dict(id='id'))
     delete=LinkCol('Delete','delete_account',url_kwargs=dict(id='id'))
 
+# Define Assets table
 class AssetsTable(Table):
     id = Col('Id', show=False)
     name = Col('Name')
@@ -22,6 +24,7 @@ class AssetsTable(Table):
     edit=LinkCol('Edit','edit_asset',url_kwargs=dict(id='id'))
     delete=LinkCol('Delete','delete_asset',url_kwargs=dict(id='id'))
 
+# Define Memebrs table
 class MembersTable(Table):
     id = Col('Id', show=False)
     name = Col('Name')
@@ -30,6 +33,7 @@ class MembersTable(Table):
     created = Col('Created On')
     modified = Col('Modified On')
 
+# Define Sensors table
 class SensorsTable(Table):
     id = Col('Id', show=False)
     UID = Col('UID')
@@ -42,6 +46,7 @@ class SensorsTable(Table):
     edit=LinkCol('Edit','edit_sensor',url_kwargs=dict(id='id'))
     delete=LinkCol('Delete','delete_sensor',url_kwargs=dict(id='id'))
 
+# Define Tags table
 class TagsTable(Table):
     id = Col('Id', show=False)
     UID = Col('UID')
@@ -54,6 +59,7 @@ class TagsTable(Table):
     edit=LinkCol('Edit','edit_tag',url_kwargs=dict(id='id'))
     delete=LinkCol('Delete','delete_tag',url_kwargs=dict(id='id'))
 
+# Define Transactions table
 class TransactionsTable(Table):
     id = Col('Id', show=False)
     sensor_id = Col('Sensor ID')
@@ -61,6 +67,7 @@ class TransactionsTable(Table):
     timestamp = Col('Timestamp')
     value = Col('Value')
 
+# Define Deposits table
 class DepositsTable(Table):
     id = Col('Id', show=False)
     account = Col('Account')
@@ -68,6 +75,7 @@ class DepositsTable(Table):
     timestamp = Col('Timestamp')
     owner = Col('Owner')
 
+# Define Withdrawals table
 class WithdrawalsTable(Table):
     id = Col('Id', show=False)
     account = Col('Account')

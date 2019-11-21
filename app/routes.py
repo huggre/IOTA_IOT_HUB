@@ -1,24 +1,16 @@
 
-from get_deposit_address import get_dep_addr
-
-#from datetime import datetime
 from sqlalchemy.sql import func
-
 from app import app
 from flask import render_template, flash, redirect, url_for, request
 
-#from flask_googlemaps import GoogleMaps
-#from flask_googlemaps import Map
-#GoogleMaps(app)
-
+# Imports the Flask Google-Maps library
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 # you can set key as config
 app.config['GOOGLEMAPS_KEY'] = "AIzaSyDFg_Ffjib_aMSSju_6Y5uo12xdjg4679c"
 GoogleMaps(app)
 
-
-
+# Imports form objects
 from app.forms import LoginForm
 from app.forms import RegistrationForm
 from app.forms import AssetForm
@@ -28,7 +20,7 @@ from app.forms import TagForm
 from app.forms import DepositForm
 from app.forms import WithdrawalForm
 
-
+# Imports table objects
 from app.tables import AccountsTable
 from app.tables import AssetsTable
 from app.tables import MembersTable
@@ -38,18 +30,17 @@ from app.tables import TransactionsTable
 from app.tables import DepositsTable
 from app.tables import WithdrawalsTable
 
-
+# Imports IotaGo db
 from app import db
 
+# Imports flask_login 
 from flask_login import current_user, login_user
 from flask_login import logout_user
 from flask_login import login_required
-
-
 from flask import request
 from werkzeug.urls import url_parse
 
-
+# Imports model objects
 from app.models import tbl_members
 from app.models import tbl_assets
 from app.models import tbl_asset_types
@@ -66,109 +57,14 @@ from app.models import tbl_transaction_errors
 
 ### HOME ###
 
-# Show map with all assets, center map on user location
 @app.route('/')
 @app.route('/index')
-#@login_required
 def index():
 
-    assets = (db.session.query(tbl_assets, tbl_asset_types)
-        .join(tbl_asset_types)
-        .add_columns(tbl_assets.id.label('asset_id'), 
-        tbl_assets.name.label('asset_name'), 
-        tbl_assets.latitude.label('asset_latitude'), 
-        tbl_assets.longitude.label('asset_longitude'), 
-        tbl_assets.price.label('asset_price'), 
-        tbl_asset_types.name.label('asset_type'))
-        )
+    return render_template('index.html',title="Home")
 
-    my_markers=[]
-    for asset in assets:
-        marker_data = (asset.asset_latitude, asset.asset_longitude, asset.asset_name, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png')
-        my_markers.append(marker_data)
 
-    mymap = Map(
-        identifier="mymap",
-        #style=(
-        #    "height:500px;"
-        #    "width:500px;"
-        #    "margin:0;"
-        #),
-        lat=58.252785,
-        lng=8.071328,
-        markers=my_markers,
-        center_on_user_location=True
-        )
-
-    return render_template('index.html',title="Home", mymap=mymap)
-
-@app.route('/asset_map')
-def asset_map():
-
-    assets = (db.session.query(tbl_assets, tbl_asset_types)
-        .join(tbl_asset_types)
-        .add_columns(tbl_assets.id.label('asset_id'), 
-        tbl_assets.name.label('asset_name'), 
-        tbl_assets.latitude.label('asset_latitude'), 
-        tbl_assets.longitude.label('asset_longitude'), 
-        tbl_assets.price.label('asset_price'), 
-        tbl_asset_types.name.label('asset_type'))
-        )
-
-    my_markers=[]
-    for asset in assets:
-        marker_data = (asset.asset_latitude, asset.asset_longitude, asset.asset_name, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png')
-        my_markers.append(marker_data)
-
-    mymap = Map(
-        identifier="mymap",
-        #style=(
-        #    "height:500px;"
-        #    "width:500px;"
-        #    "margin:0;"
-        #),
-        lat=58.252785,
-        lng=8.071328,
-        markers=my_markers,
-        center_on_user_location=True
-        )
-
-    return render_template('asset_map.html',title="Asset Map", mymap=mymap)
-
-@app.route('/map')
-#@login_required
-def my_map():
-
-    assets = (db.session.query(tbl_assets, tbl_asset_types)
-        .join(tbl_asset_types)
-        .add_columns(tbl_assets.id.label('asset_id'), 
-        tbl_assets.name.label('asset_name'), 
-        tbl_assets.latitude.label('asset_latitude'), 
-        tbl_assets.longitude.label('asset_longitude'), 
-        tbl_assets.price.label('asset_price'), 
-        tbl_asset_types.name.label('asset_type'))
-        )
-
-    my_markers=[]
-    for asset in assets:
-        marker_data = (asset.asset_latitude, asset.asset_longitude, asset.asset_name, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png')
-        my_markers.append(marker_data)
-
-    mymap = Map(
-        identifier="mymap",
-        style=(
-            "height:500px;"
-            "width:500px;"
-            "margin:0;"
-        ),
-        lat=58.252785,
-        lng=8.071328,
-        markers=my_markers,
-        center_on_user_location=True
-        )
-
-    return render_template('example.html',title="Home", mymap=mymap)
-
+### LOGINS AND MEMBER REGISTRATION ###
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -206,16 +102,42 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-@app.route('/user/<username>')
-@login_required
-def user(username):
-    #user = User.query.filter_by(name=username).first_or_404()
-    user = tbl_members.query.filter_by(name=username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
-    ]
-    return render_template('user.html', user=user, posts=posts)
+
+### ASSETS MAP (Google Maps) ###
+
+@app.route('/asset_map')
+def asset_map():
+
+    assets = (db.session.query(tbl_assets, tbl_asset_types)
+        .join(tbl_asset_types)
+        .add_columns(tbl_assets.id.label('asset_id'), 
+        tbl_assets.name.label('asset_name'), 
+        tbl_assets.latitude.label('asset_latitude'), 
+        tbl_assets.longitude.label('asset_longitude'), 
+        tbl_assets.price.label('asset_price'), 
+        tbl_asset_types.name.label('asset_type'))
+        )
+
+    my_markers=[]
+    for asset in assets:
+        marker_data = (asset.asset_latitude, asset.asset_longitude, asset.asset_name, 'http://maps.google.com/mapfiles/ms/icons/green-dot.png')
+        my_markers.append(marker_data)
+
+    mymap = Map(
+        identifier="mymap",
+        #style=(
+        #    "height:500px;"
+        #    "width:500px;"
+        #    "margin:0;"
+        #),
+        lat=58.252785,
+        lng=8.071328,
+        markers=my_markers,
+        center_on_user_location=True
+        )
+
+    return render_template('asset_map.html',title="Asset Map", mymap=mymap)
+
 
 ### DEPOSITS ###
 
@@ -241,9 +163,6 @@ def new_deposit():
 
     # Add user accounts to SelectField
     form.account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
-
-    # Get the next available address from master seed
-    form.deposit_address.data = get_dep_addr()
 
     if form.validate_on_submit():
         
@@ -361,18 +280,31 @@ def tag_details(id):
 
 # Save tag function
 def save_tag(tag, form, new=False):
-    tag.UID = form.tag_UID.data
-    tag.name = form.tag_name.data
-    tag.tag_type = form.tag_type.data
-    tag.account = form.tag_account.data
-    if new:
-        # Add the new asset to the database
-        tag.owner = current_user.id
-        db.session.add(tag)
+
+    # Check that the Sensor UID is unique and save to db
+    UID_tag = tbl_tags.query.filter_by(UID=form.tag_UID.data).first()
+
+    # In case user has not changed UID then its OK to save
+    if tag.UID == form.tag_UID.data:
+        UID_tag = None
+
+    if UID_tag is None:
+        tag.UID = form.tag_UID.data
+        tag.name = form.tag_name.data
+        tag.tag_type = form.tag_type.data
+        tag.account = form.tag_account.data
+        if new:
+            # Add the new asset to the database
+            tag.owner = current_user.id
+            db.session.add(tag)
+        else:
+            tag.modified = func.now()
+        # commit the data to the database
+        db.session.commit()
+        return True
     else:
-        tag.modified = func.now()
-    # commit the data to the database
-    db.session.commit()
+        flash('A tag with UID: ' + form.tag_UID.data + ' already exist in the IotaGo database')
+        return False
 
 # Create new tag
 @app.route('/new_tag', methods=['GET', 'POST'])
@@ -388,9 +320,10 @@ def new_tag():
 
     if form.validate_on_submit():
         tag = tbl_tags()
-        save_tag(tag, form, new=True)
-        flash('New tag created sucessfully!!')
-        return redirect(url_for('tags'))
+        retval = save_tag(tag, form, new=True)
+        if retval == True:
+            flash('New tag created sucessfully!!')
+            return redirect(url_for('tags'))
     return render_template('tag.html', title='New tag', form=form)
 
 # Edit existing tag
@@ -412,9 +345,10 @@ def edit_tag(id):
             form.tag_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
 
             if form.validate_on_submit():
-                save_tag(tag, form)
-                flash('Tag updated successfully!')
-                return redirect(url_for('tags'))
+                retval = save_tag(tag, form)
+                if retval == True:
+                    flash('Tag updated successfully!')
+                    return redirect(url_for('tags'))
             elif request.method == 'GET':
                 # Populate form fields here
                 form.tag_UID.data = tag.UID
@@ -624,18 +558,31 @@ def sensor_details(id):
 
 # Save sensor function
 def save_sensor(sensor, form, new=False):
-    sensor.UID = form.sensor_UID.data
-    sensor.name = form.sensor_name.data
-    sensor.sensor_type = form.sensor_type.data
-    sensor.parent_asset = form.parent_asset.data
-    if new:
-        # Add the new sensor to the database
-        sensor.owner = current_user.id
-        db.session.add(sensor)
+
+    # Check that the Sensor UID is unique and save to db
+    UID_sensor = tbl_sensors.query.filter_by(UID=form.sensor_UID.data).first()
+
+    # In case user has not changed UID then its OK to save
+    if sensor.UID == form.sensor_UID.data:
+        UID_sensor = None
+
+    if UID_sensor is None:
+        sensor.UID = form.sensor_UID.data
+        sensor.name = form.sensor_name.data
+        sensor.sensor_type = form.sensor_type.data
+        sensor.parent_asset = form.parent_asset.data
+        if new:
+            # Add the new sensor to the database
+            sensor.owner = current_user.id
+            db.session.add(sensor)
+        else:
+            sensor.modified = func.now()
+        # commit the data to the database
+        db.session.commit()
+        return True
     else:
-        sensor.modified = func.now()
-    # commit the data to the database
-    db.session.commit()
+        flash('A sensor with UID: ' + form.sensor_UID.data + ' already exist in the IotaGo database')
+        return False
 
 # Create new sensor
 @app.route('/new_sensor', methods=['GET', 'POST'])
@@ -651,9 +598,10 @@ def new_sensor():
 
     if form.validate_on_submit():
         sensor = tbl_sensors()
-        save_sensor(sensor, form, new=True)
-        flash('New sensor created sucessfully!!')
-        return redirect(url_for('sensors'))
+        retval = save_sensor(sensor, form, new=True)
+        if retval == True:
+            flash('New sensor created sucessfully!!')
+            return redirect(url_for('sensors'))
     return render_template('sensor.html', title='New sensor', form=form)
 
 # Edit existing sensor
@@ -673,9 +621,10 @@ def edit_sensor(id):
             form.parent_asset.choices = [(parass_row.id, parass_row.name) for parass_row in tbl_assets.query.filter_by(owner=current_user.id)]
 
             if form.validate_on_submit():
-                save_sensor(sensor, form)
-                flash('Sensor updated successfully!')
-                return redirect(url_for('sensors'))
+                retval = save_sensor(sensor, form)
+                if retval == True:
+                    flash('Sensor updated successfully!')
+                    return redirect(url_for('sensors'))
             elif request.method == 'GET':
                 # Populate form fields here
                 form.sensor_UID.data = sensor.UID
@@ -784,7 +733,7 @@ def edit_account(id):
 def transactions():
     transactions = (db.session.query(tbl_transactions, tbl_tags, tbl_assets, tbl_sensors)
         .join(tbl_tags)
-        .join(tbl_assets)
+        .join(tbl_assets, tbl_sensors.parent_asset == tbl_assets.id)
         .join(tbl_sensors)
         .filter((tbl_tags.owner == current_user.id) | (tbl_assets.owner == current_user.id))
         .add_columns(tbl_transactions.id.label('transaction_id'), 

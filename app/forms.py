@@ -1,20 +1,19 @@
+# Imports IotaGo form dependencies
 from flask_wtf import FlaskForm
 from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
-#from flask_sqlalchemy import SQLAlchemy
-#from wtforms.ext.sqlalchemy.fields import QuerySelectField
-#from wtforms_sqlalchemy.fields import QuerySelectField
-
+# Imports the IotaGo members table
 from app.models import tbl_members
-#from app.models import tbl_sensor_types
 
+# IotaGo login form
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+# Registration form for new IotaGo members
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -33,12 +32,7 @@ class RegistrationForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address.')
 	
-#def choice_query():
-#    return tbl_sensor_types.query
-
-#class Choiceform(FlaskForm):
-#    opts = QuerySelectField(query_factory=choice_query,allow_blank=True)
-
+# Form for new/edit Asset
 class AssetForm(FlaskForm):
     asset_name = StringField('Name', validators=[DataRequired()])
     asset_type = SelectField('Type', coerce=int)
@@ -50,6 +44,7 @@ class AssetForm(FlaskForm):
     asset_price = FloatField('Price', default='0.0', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+# Form for new/edit Sensor
 class SensorForm(FlaskForm):
     sensor_name = StringField('Name', validators=[DataRequired()])
     sensor_type = SelectField('Type', coerce=int)
@@ -57,10 +52,12 @@ class SensorForm(FlaskForm):
     sensor_UID = StringField('UID', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+# Form for new/edit Account
 class AccountForm(FlaskForm):
     account_name = StringField('Name', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+# Form for new/edit Tag
 class TagForm(FlaskForm):
     tag_name = StringField('Name', validators=[DataRequired()])
     tag_type = SelectField('Type', coerce=int)
@@ -68,13 +65,13 @@ class TagForm(FlaskForm):
     tag_UID = StringField('UID', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+# Form for new Deposit
 class DepositForm(FlaskForm):
     account = SelectField('Account', coerce=int)
-    #value = StringField('Value', validators=[DataRequired()])
-    deposit_address = StringField('IOTA Deposit Address', validators=[DataRequired()])
     value = FloatField('Amount', default='0.0', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+# Form for new Withdrawal
 class WithdrawalForm(FlaskForm):
     account = SelectField('Account', coerce=int)
     value = FloatField('Amount', default='0.0', validators=[DataRequired()])
