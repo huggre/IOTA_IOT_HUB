@@ -97,6 +97,7 @@ class tbl_tag_types(db.Model):
 class tbl_tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     UID = db.Column(db.String(64), index=True, unique=True)
+    KEY = db.Column(db.String(64))
     name = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())

@@ -63,6 +63,7 @@ class TagForm(FlaskForm):
     tag_type = SelectField('Type', coerce=int)
     tag_account = SelectField('Account', coerce=int)
     tag_UID = StringField('UID', validators=[DataRequired()])
+    tag_KEY = StringField('KEY', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 # Form for new Deposit

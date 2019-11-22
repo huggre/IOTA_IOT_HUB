@@ -290,6 +290,7 @@ def save_tag(tag, form, new=False):
 
     if UID_tag is None:
         tag.UID = form.tag_UID.data
+        tag.KEY = form.tag_KEY.data
         tag.name = form.tag_name.data
         tag.tag_type = form.tag_type.data
         tag.account = form.tag_account.data
@@ -352,6 +353,7 @@ def edit_tag(id):
             elif request.method == 'GET':
                 # Populate form fields here
                 form.tag_UID.data = tag.UID
+                form.tag_KEY.data = tag.KEY
                 form.tag_name.data = tag.name
                 form.tag_type.data = tag.tag_type
                 form.tag_account.data = tag.account
@@ -731,18 +733,15 @@ def edit_account(id):
 # List my transactions
 @app.route('/transactions')
 def transactions():
-    transactions = (db.session.query(tbl_transactions, tbl_tags, tbl_assets, tbl_sensors)
+    transactions = (db.session.query(tbl_transactions, tbl_tags, tbl_assets)
         .join(tbl_tags)
-        .join(tbl_assets, tbl_sensors.parent_asset == tbl_assets.id)
-        .join(tbl_sensors)
+        .join(tbl_assets)
         .filter((tbl_tags.owner == current_user.id) | (tbl_assets.owner == current_user.id))
         .add_columns(tbl_transactions.id.label('transaction_id'), 
         tbl_tags.id.label('tag_id'), 
         tbl_tags.name.label('tag_name'), 
         tbl_assets.id.label('asset_id'), 
         tbl_assets.name.label('asset_name'), 
-        tbl_sensors.id.label('sensor_id'), 
-        tbl_sensors.name.label('sensor_name'), 
         tbl_transactions.timestamp.label('transaction_timestamp'), 
         tbl_transactions.transaction_value.label('transaction_value'))
         )

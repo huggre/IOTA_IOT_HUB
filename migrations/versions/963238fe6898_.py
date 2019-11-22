@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 67bae6c9d0a4
+Revision ID: 963238fe6898
 Revises: 
-Create Date: 2019-11-21 10:28:55.397962
+Create Date: 2019-11-22 12:02:13.003026
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '67bae6c9d0a4'
+revision = '963238fe6898'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,10 +35,10 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tbl_members_created'), 'tbl_members', ['created'], unique=False)
-    op.create_index(op.f('ix_tbl_members_email'), 'tbl_members', ['email'], unique=True)
+    op.create_index(op.f('ix_tbl_members_email'), 'tbl_members', ['email'], unique=False)
     op.create_index(op.f('ix_tbl_members_modified'), 'tbl_members', ['modified'], unique=False)
     op.create_index(op.f('ix_tbl_members_name'), 'tbl_members', ['name'], unique=True)
-    op.create_index(op.f('ix_tbl_members_phone'), 'tbl_members', ['phone'], unique=True)
+    op.create_index(op.f('ix_tbl_members_phone'), 'tbl_members', ['phone'], unique=False)
     op.create_table('tbl_sensor_types',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=64), nullable=True),
@@ -105,6 +105,7 @@ def upgrade():
     op.create_table('tbl_tags',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('UID', sa.String(length=64), nullable=True),
+    sa.Column('KEY', sa.String(length=64), nullable=True),
     sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
