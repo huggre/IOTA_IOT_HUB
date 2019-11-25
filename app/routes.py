@@ -45,13 +45,13 @@ from app.models import tbl_members
 from app.models import tbl_assets
 from app.models import tbl_asset_types
 from app.models import tbl_tags
-from app.models import tbl_tag_types
+#from app.models import tbl_tag_types
 from app.models import tbl_sensors
 from app.models import tbl_sensor_types
-from app.models import tbl_accounts
+#from app.models import tbl_accounts
 from app.models import tbl_transactions
-from app.models import tbl_deposits
-from app.models import tbl_withdrawals
+#from app.models import tbl_deposits
+#from app.models import tbl_withdrawals
 from app.models import tbl_transaction_errors
 
 
@@ -141,7 +141,7 @@ def asset_map():
 
 ### DEPOSITS ###
 
-# List my deposits
+""" # List my deposits
 @app.route('/deposits')
 def deposits():
     deposits = (db.session.query(tbl_deposits, tbl_accounts)
@@ -230,11 +230,11 @@ def new_withdrawal():
         flash('New withdrawal created sucessfully!!')
         return redirect(url_for('withdrawals'))
     return render_template('withdrawal.html', title='New withdrawal', form=form)
-
+ """
 
 ### TAGS ###
 
-# List my tags
+""" # List my tags
 @app.route('/tags')
 def tags():
     tags = (db.session.query(tbl_tags, tbl_accounts, tbl_tag_types)
@@ -363,21 +363,21 @@ def edit_tag(id):
             return render_template('authorization_error.html', title='Not authorized!!')
     else:
         return 'Error loading #{id}'.format(id=id)    
-
+ """
 ### ASSETS ###
 
 # List my assets
 @app.route('/assets')
 def assets():
-    assets = (db.session.query(tbl_assets, tbl_accounts, tbl_asset_types)
-        .join(tbl_accounts)
+    assets = (db.session.query(tbl_assets, tbl_asset_types)
+        #.join(tbl_accounts)
         .join(tbl_asset_types)
         .filter(tbl_assets.owner == current_user.id)
         .add_columns(tbl_assets.id.label('asset_id'), 
         tbl_assets.name.label('asset_name'), 
-        tbl_assets.price.label('asset_price'), 
-        tbl_accounts.id.label('asset_account_id'), 
-        tbl_accounts.name.label('asset_account_name'), 
+        tbl_assets.balance.label('asset_balance'), 
+        #tbl_accounts.id.label('asset_account_id'), 
+        #tbl_accounts.name.label('asset_account_name'), 
         tbl_asset_types.name.label('asset_type'))
         )
     return render_template("assets.html",assets = assets)
@@ -386,8 +386,7 @@ def assets():
 @app.route('/asset_details/<int:id>')
 def asset_details(id):
        
-    asset = (db.session.query(tbl_assets, tbl_accounts, tbl_asset_types)
-        .join(tbl_accounts, tbl_assets.account == tbl_accounts.id)
+    asset = (db.session.query(tbl_assets, tbl_asset_types)
         .join(tbl_asset_types, tbl_assets.asset_type == tbl_asset_types.id)
         .join(tbl_members, tbl_assets.owner == tbl_members.id)
         .filter(tbl_assets.id == id)
@@ -400,8 +399,8 @@ def asset_details(id):
         tbl_assets.latitude.label('asset_latitude'), 
         tbl_assets.longitude.label('asset_longitude'), 
         tbl_assets.price.label('asset_price'), 
-        tbl_accounts.id.label('asset_account_id'), 
-        tbl_accounts.name.label('asset_account_name'), 
+        #tbl_accounts.id.label('asset_account_id'), 
+        #tbl_accounts.name.label('asset_account_name'), 
         tbl_asset_types.name.label('asset_type'), 
         tbl_members.id.label('asset_owner_id'),
         tbl_members.name.label('asset_owner_name'),
@@ -434,16 +433,18 @@ def asset_details(id):
 # Save asset function
 def save_asset(asset, form, new=False):
     asset.name = form.asset_name.data
+    asset.KEY = form.asset_KEY.data
     asset.city = form.asset_city.data
     asset.country = form.asset_country.data
     asset.latitude = form.asset_latitude.data
     asset.longitude = form.asset_longitude.data
     asset.price = form.asset_price.data
     asset.asset_type = form.asset_type.data
-    asset.account = form.asset_account.data
+    #asset.account = form.asset_account.data
     if new:
         # Add the new asset to the database
         asset.owner = current_user.id
+        asset.balance = 0.0
         db.session.add(asset)
     else:
         asset.modified = func.now()
@@ -460,7 +461,7 @@ def new_asset():
     form.asset_type.choices = [(asstype_row.id, asstype_row.name) for asstype_row in tbl_asset_types.query.all()]
 
     # Add user accounts to SelectField
-    form.asset_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
+    #form.asset_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
 
     if form.validate_on_submit():
         asset = tbl_assets()
@@ -486,7 +487,7 @@ def edit_asset(id):
             form.asset_type.choices = [(asstype_row.id, asstype_row.name) for asstype_row in tbl_asset_types.query.all()]
 
             # Add user accounts to SelectField
-            form.asset_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
+            #form.asset_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
 
             if form.validate_on_submit():
                 save_asset(asset, form)
@@ -501,7 +502,7 @@ def edit_asset(id):
                 form.asset_longitude.data = asset.longitude
                 form.asset_price.data = asset.price
                 form.asset_type.data = asset.asset_type
-                form.asset_account.data = asset.account
+                #form.asset_account.data = asset.account
 
             return render_template('asset.html', title='Edit asset', form=form)
 
@@ -645,7 +646,7 @@ def edit_sensor(id):
 
 ### ACCOUNTS ###
 
-# List my accounts
+""" # List my accounts
 @app.route('/accounts')
 def accounts():
     accounts = (db.session.query(tbl_accounts)
@@ -727,7 +728,7 @@ def edit_account(id):
             return render_template('authorization_error.html', title='Not authorized!!')
     else:
         return 'Error loading #{id}'.format(id=id)
-
+ """
 ### TRANSACTIONS ###
 
 # List my transactions

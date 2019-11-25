@@ -15,11 +15,11 @@ class AccountsTable(Table):
 class AssetsTable(Table):
     id = Col('Id', show=False)
     name = Col('Name')
-    price = Col('Price [MIOTA]')
+    balance = Col('Balance')
     created = Col('Created On')
     modified = Col('Modified On')
     asset_type = Col('Asset Type')
-    account = Col('Account')
+    #account = Col('Account')
     owner = Col('Owner')
     edit=LinkCol('Edit','edit_asset',url_kwargs=dict(id='id'))
     delete=LinkCol('Delete','delete_asset',url_kwargs=dict(id='id'))

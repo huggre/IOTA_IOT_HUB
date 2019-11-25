@@ -35,12 +35,13 @@ class RegistrationForm(FlaskForm):
 # Form for new/edit Asset
 class AssetForm(FlaskForm):
     asset_name = StringField('Name', validators=[DataRequired()])
+    asset_KEY = StringField('KEY', validators=[DataRequired()])
     asset_type = SelectField('Type', coerce=int)
     asset_city = StringField('City', validators=[DataRequired()])
     asset_country = StringField('Country', validators=[DataRequired()])
     asset_latitude = FloatField('Latitude', default='0.0', validators=[DataRequired()])
     asset_longitude = FloatField('Longitude', default='0.0', validators=[DataRequired()])
-    asset_account = SelectField('Account', coerce=int)
+    #asset_account = SelectField('Account', coerce=int)
     asset_price = FloatField('Price', default='0.0', validators=[DataRequired()])
     submit = SubmitField('Submit')
 

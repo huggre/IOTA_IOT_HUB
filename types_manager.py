@@ -5,21 +5,8 @@ from sqlalchemy.sql import func
 
 from app import db
 
-from app.models import tbl_tag_types
 from app.models import tbl_sensor_types
 from app.models import tbl_asset_types
-
-def add_tagtype(tag_type_name):
-
-    tag_type = tbl_tag_types()
-    tag_type.name = tag_type_name 
-
-    db.session.add(tag_type)
-
-    # Commit tagtype to DB
-    db.session.commit()
-
-    print("\n Tag Type: " + tag_type_name + " added to DB")
 
 def add_sensortype(sensor_type_name):
 
@@ -61,22 +48,18 @@ Common asset types are: Parking Lot, Sports Venue etc.
 ans=True
 while ans:
     print ("""
-    1.Add Tag Type
     2.Add Sensor Type
     3.Add Asset Type
     4.Exit/Quit
     """)
     ans=input("What would you like to do? ") 
     if ans=="1":
-        tag_type_name = input("\n Specify Tag Type Name:")
-        add_tagtype(tag_type_name)
-    elif ans=="2":
         sensor_type_name = input("\n Specify Sensor Type Name:")
         add_sensortype(sensor_type_name)
-    elif ans=="3":
+    elif ans=="2":
         asset_type_name = input("\n Specify Asset Type Name:")
         add_assettype(asset_type_name)
-    elif ans=="4":
+    elif ans=="3":
       exit()
     elif ans !="":
       print("\n Not Valid Choice Try again") 
