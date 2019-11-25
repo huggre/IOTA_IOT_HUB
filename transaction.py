@@ -22,6 +22,7 @@ from app.models import tbl_transactions
 #from app.models import tbl_deposits
 #from app.models import tbl_withdrawals
 from app.models import tbl_transaction_errors
+from app.models import tbl_asset_tags
 
 def add_sensortype(sensor_type_name):
 
@@ -47,7 +48,7 @@ def add_assettype(asset_type_name):
 
     print("\n Asset Type: " + asset_type_name + " added to DB")
 
-def register_tag(tag_UID):
+def register_tag(tag_UID, assetID):
     # Check if tag UID already exist
     tag = (db.session.query(tbl_tags)
         .filter(tbl_tags.tag_UID == tag_UID)
@@ -67,7 +68,13 @@ def register_tag(tag_UID):
     else:
         print("Tag UID already exist")
 
-def add_transaction(sensor_UID, tag_UID, trans_type, value):
+    # Assign tag to Asset
+    asset_tag = tbl_asset_tags()
+    asset_tag.asset_id = assetID
+    asset_tag.tag_UID = tag_UID
+    asset_tag.asset_tag_balance = 0.0
+    db.session.add(asset_tag)
+    db.session.commit()
 
 
 clear()
@@ -82,6 +89,8 @@ Common asset types are: Parking Lot, Sports Venue etc.
 
 """)
 
+assetID = 1
+
 ans=True
 while ans:
     print ("""
@@ -92,9 +101,9 @@ while ans:
     ans=input("What would you like to do? ") 
     if ans=="1":
         tag_UID = input("\n Specify Tag UID:")
-        register_tag(tag_UID)
+        register_tag(tag_UID, assetID)
     elif ans=="2":
-        sensor_UID input("\n Specify Sensor UID:")
+        sensor_UID = input("\n Specify Sensor UID:")
         tag_UID = input("\n Specify Tag UID:")
         trans_type = input("\n Specify Transaction Type ID:")
         value = input("\n Specify Value:")
