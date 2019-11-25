@@ -496,6 +496,7 @@ def edit_asset(id):
             elif request.method == 'GET':
                 # Populate form fields here
                 form.asset_name.data = asset.name
+                form.asset_KEY.data = asset.KEY
                 form.asset_city.data = asset.city
                 form.asset_country.data = asset.country
                 form.asset_latitude.data = asset.latitude
