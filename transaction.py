@@ -16,7 +16,7 @@ from app.models import tbl_asset_types
 from app.models import tbl_tags
 #from app.models import tbl_tag_types
 from app.models import tbl_sensors
-from app.models import tbl_sensor_types
+#from app.models import tbl_sensor_types
 #from app.models import tbl_accounts
 from app.models import tbl_transactions
 #from app.models import tbl_deposits
@@ -76,6 +76,22 @@ def register_tag(tag_UID, assetID):
     db.session.add(asset_tag)
     db.session.commit()
 
+def add_transaction(sensor_UID, tag_UID, assetID, trans_type, value):
+    
+    # Add new transaction to the transactions table
+    trans = tbl_transactions()
+    trans.tag_UID = tag_UID
+    trans.sensor_UID = sensor_UID
+    trans.asset_id = assetID
+    trans.transaction_type_id = trans_type
+    trans.transaction_value = value
+
+    db.session.add(trans)
+
+    # Commit new transaction to DB
+    db.session.commit()
+
+
 
 clear()
 
@@ -89,13 +105,14 @@ Common asset types are: Parking Lot, Sports Venue etc.
 
 """)
 
+sensor_UID = 'SENS2'
 assetID = 1
 
 ans=True
 while ans:
     print ("""
     1.Register Tag
-    2.Add Transaction
+    2.Deposit
     3.Exit/Quit
     """)
     ans=input("What would you like to do? ") 
@@ -103,11 +120,11 @@ while ans:
         tag_UID = input("\n Specify Tag UID:")
         register_tag(tag_UID, assetID)
     elif ans=="2":
-        sensor_UID = input("\n Specify Sensor UID:")
+        #sensor_UID = input("\n Specify Sensor UID:")
         tag_UID = input("\n Specify Tag UID:")
-        trans_type = input("\n Specify Transaction Type ID:")
+        trans_type = 1
         value = input("\n Specify Value:")
-        add_transaction(sensor_UID, tag_UID, trans_type, deposit_value)
+        add_transaction(sensor_UID, tag_UID, assetID, trans_type, value)
     elif ans=="3":
       exit()
     elif ans !="":

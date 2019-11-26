@@ -47,9 +47,10 @@ from app.models import tbl_asset_types
 from app.models import tbl_tags
 #from app.models import tbl_tag_types
 from app.models import tbl_sensors
-from app.models import tbl_sensor_types
+#from app.models import tbl_sensor_types
 #from app.models import tbl_accounts
 from app.models import tbl_transactions
+from app.models import tbl_transaction_types
 #from app.models import tbl_deposits
 #from app.models import tbl_withdrawals
 from app.models import tbl_transaction_errors
@@ -516,7 +517,7 @@ def edit_asset(id):
 
 
 ### SENSORS ###
-
+""" 
 # List my sensors
 @app.route('/sensors')
 def sensors():
@@ -644,7 +645,7 @@ def edit_sensor(id):
     else:
         return 'Error loading #{id}'.format(id=id)
 
-
+ """
 ### ACCOUNTS ###
 
 """ # List my accounts
@@ -735,19 +736,38 @@ def edit_account(id):
 # List my transactions
 @app.route('/transactions')
 def transactions():
-    transactions = (db.session.query(tbl_transactions, tbl_tags, tbl_assets)
-        .join(tbl_tags)
+    transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_assets)
+        .join(tbl_transaction_types)
         .join(tbl_assets)
-        .filter((tbl_tags.owner == current_user.id) | (tbl_assets.owner == current_user.id))
+        .filter(tbl_assets.owner == current_user.id)
         .add_columns(tbl_transactions.id.label('transaction_id'), 
-        tbl_tags.id.label('tag_id'), 
-        tbl_tags.name.label('tag_name'), 
         tbl_assets.id.label('asset_id'), 
         tbl_assets.name.label('asset_name'), 
         tbl_transactions.timestamp.label('transaction_timestamp'), 
+        tbl_transaction_types.name.label('transaction_type'), 
         tbl_transactions.transaction_value.label('transaction_value'))
         )
     return render_template("transactions.html",transactions = transactions)
+
+""" # List my transactions
+@app.route('/transactions')
+def transactions():
+    transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_tags, tbl_sensors, tbl_assets)
+        .join(tbl_tags)
+        .join(tbl_transaction_types)
+        .join(tbl_assets)
+        .join(tbl_sensors)
+        .filter(tbl_assets.owner == current_user.id)
+        .add_columns(tbl_transactions.id.label('transaction_id'), 
+        tbl_tags.tag_UID.label('tag_UID'), 
+        tbl_sensors.sensor_UID.label('sensor_UID'), 
+        tbl_assets.id.label('asset_id'), 
+        tbl_assets.name.label('asset_name'), 
+        tbl_transactions.timestamp.label('transaction_timestamp'), 
+        tbl_transaction_types.name.label('transaction_type'), 
+        tbl_transactions.transaction_value.label('transaction_value'))
+        )
+    return render_template("transactions.html",transactions = transactions) """
 
 
 

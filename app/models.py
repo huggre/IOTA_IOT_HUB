@@ -21,7 +21,7 @@ class tbl_members(UserMixin, db.Model):
     assets = db.relationship('tbl_assets', backref='member', lazy='dynamic')
     #tags = db.relationship('tbl_tags', backref='member', lazy='dynamic')
     #accounts = db.relationship('tbl_accounts', backref='member', lazy='dynamic')
-    sensors = db.relationship('tbl_sensors', backref='member', lazy='dynamic')
+    #sensors = db.relationship('tbl_sensors', backref='member', lazy='dynamic')
 
     def __repr__(self):
         return '<Member {}>'.format(self.member_name)
@@ -33,24 +33,24 @@ class tbl_members(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 # Define the Sensor types table
-class tbl_sensor_types(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), index=True, unique=True)
-    sensors = db.relationship('tbl_sensors', backref='stype', lazy='dynamic')
+#class tbl_sensor_types(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    name = db.Column(db.String(64), index=True, unique=True)
+#    sensors = db.relationship('tbl_sensors', backref='stype', lazy='dynamic')
 
-    def __repr__(self):
-        return '<SensorType {}>'.format(self.name)
+#    def __repr__(self):
+#        return '<SensorType {}>'.format(self.name)
 
 # Define the Sensors table
 class tbl_sensors(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    UID = db.Column(db.String(64), index=True, unique=True)
-    name = db.Column(db.String(64))
+    #id = db.Column(db.Integer, primary_key=True)
+    sensor_UID = db.Column(db.String(64), primary_key=True)
+    description = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
-    modified = db.Column(db.DateTime, index=True, default=func.now())
-    sensor_type = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
-    parent_asset = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
-    owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
+    #modified = db.Column(db.DateTime, index=True, default=func.now())
+    #sensor_type = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
+    #parent_asset = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
+    #owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
     transactions = db.relationship('tbl_transactions', backref='trans_sensor_id', lazy='dynamic')
 
     def __repr__(self):
@@ -81,7 +81,7 @@ class tbl_assets(db.Model):
     asset_type = db.Column(db.Integer, db.ForeignKey('tbl_asset_types.id'))
     #account = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
     owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
-    sensors = db.relationship('tbl_sensors', backref='sensor_asset', lazy='dynamic')
+    #sensors = db.relationship('tbl_sensors', backref='sensor_asset', lazy='dynamic')
 
     def __repr__(self):
         return '<Asset {}>'.format(self.name)
@@ -141,7 +141,7 @@ class tbl_transactions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag_UID = db.Column(db.Integer, db.ForeignKey('tbl_tags.tag_UID'))
     #tag_account_id = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
-    sensor_id = db.Column(db.Integer, db.ForeignKey('tbl_sensors.id'))
+    sensor_UID = db.Column(db.Integer, db.ForeignKey('tbl_sensors.sensor_UID'))
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
     #asset_account_id = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
     transaction_type_id = db.Column(db.Integer, db.ForeignKey('tbl_transaction_types.id'))
