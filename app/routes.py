@@ -793,3 +793,7 @@ def members():
     table = MembersTable(members)
     table.border = True
     return render_template("members.html",table = table)
+
+@app.route('/test')
+def test():
+    return render_template("test.html")
