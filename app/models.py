@@ -45,7 +45,7 @@ class tbl_members(UserMixin, db.Model):
 class tbl_sensors(db.Model):
     #id = db.Column(db.Integer, primary_key=True)
     sensor_UID = db.Column(db.String(64), primary_key=True)
-    description = db.Column(db.String(64))
+    #description = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
     #modified = db.Column(db.DateTime, index=True, default=func.now())
     #sensor_type = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
@@ -90,14 +90,32 @@ class tbl_assets(db.Model):
 class tbl_asset_tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
-    tag_UID = db.Column(db.Integer, db.ForeignKey('tbl_tags.tag_UID'))
+    tag_UID = db.Column(db.String(64), db.ForeignKey('tbl_tags.tag_UID'))
+    description = db.Column(db.String(64))
     asset_tag_balance = db.Column(db.Float)
+    created = db.Column(db.DateTime, index=True, default=func.now())
 
     #name = db.Column(db.String(64), index=True, unique=True)
     #assets = db.relationship('tbl_assets', backref='atype', lazy='dynamic')
 
     def __repr__(self):
         return '<AssetTag {}>'.format(self.name)
+
+# Define the Asset Sensors table (many-to-many)
+class tbl_asset_sensors(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
+    sensor_UID = db.Column(db.String(64), db.ForeignKey('tbl_sensors.sensor_UID'))
+    description = db.Column(db.String(64))
+    created = db.Column(db.DateTime, index=True, default=func.now())
+
+    #asset_tag_balance = db.Column(db.Float)
+
+    #name = db.Column(db.String(64), index=True, unique=True)
+    #assets = db.relationship('tbl_assets', backref='atype', lazy='dynamic')
+
+    def __repr__(self):
+        return '<AssetSensor {}>'.format(self.name)
 
 # Define the Tag types table
 #class tbl_tag_types(db.Model):
