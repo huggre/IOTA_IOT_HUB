@@ -6,67 +6,121 @@
 		<div class="col-md-10">
 		<table style="width:100%">
 			<tr>
-				<td><h1>Asset details</h1></td>
-			</tr>
-			<tr>
-				<td>{{mymap.html}}</td>
+				<td><h1>Asset data</h1></td>
 			</tr>
 		</table>
-		<table class="table table-striped" id="asset_details">
-			<thead>
-			<tr>
-				<th class="col-md-2">Attribute</th>
-				<th class="col-md-8">Value</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td>ID</td>
-				<td>{{ asset.asset_id }}</td>
-			</tr>
-			<tr>
-				<td>Created</td>
-				<td>{{ asset.asset_created }}</td>
-			</tr>
-			<tr>
-				<td>Modified</td>
-				<td>{{ asset.asset_modified }}</td>
-			</tr>
-			<tr>
-				<td>Name</td>
-				<td>{{ asset.asset_name }}</td>
-			</tr>
-			<tr>
-				<td>Type</td>
-				<td>{{ asset.asset_type }}</td>
-			</tr>
-			<tr>
-				<td>City</td>
-				<td>{{ asset.asset_city }}</td>
-			</tr>
-			<tr>
-				<td>Country</td>
-				<td>{{ asset.asset_country }}</td>
-			</tr>
-			<tr>
-				<td>Latitude</td>
-				<td>{{ asset.asset_latitude }}</td>
-			</tr>
 
-			<tr>
-				<td>Longitude</td>
-				<td>{{ asset.asset_longitude }}</td>
-			</tr>
-			<tr>
-				<td>Price</td>
-				<td>{{ asset.asset_price }}</td>
-			</tr>
-			<tr>
-				<td>Owner</td>
-				<td><a href="/member_details/{{ asset.asset_owner_id }}">{{ asset.asset_owner_name }}</a></td>
-			</tr>
-			</tbody>
-		</table>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#home">Asset Details</a></li>
+			<li><a data-toggle="tab" href="#menu1">Asset Transactions</a></li>
+			<li><a data-toggle="tab" href="#menu2">Asset Tags</a></li>
+			<li><a data-toggle="tab" href="#menu3">Asset Readers</a></li>
+		</ul>
+	
+	
+		<div class="tab-content">
+	
+			<div id="home" class="tab-pane fade in active">
+
+				<table class="table table-striped" id="asset_details">
+					<thead>
+					<tr>
+						<th class="col-md-2">Attribute</th>
+						<th class="col-md-8">Value</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td>ID</td>
+						<td>{{ asset.asset_id }}</td>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td>{{ asset.asset_created }}</td>
+					</tr>
+					<tr>
+						<td>Modified</td>
+						<td>{{ asset.asset_modified }}</td>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<td>{{ asset.asset_name }}</td>
+					</tr>
+					<tr>
+						<td>Type</td>
+						<td>{{ asset.asset_type }}</td>
+					</tr>
+					<tr>
+						<td>City</td>
+						<td>{{ asset.asset_city }}</td>
+					</tr>
+					<tr>
+						<td>Country</td>
+						<td>{{ asset.asset_country }}</td>
+					</tr>
+					<tr>
+						<td>Latitude</td>
+						<td>{{ asset.asset_latitude }}</td>
+					</tr>
+		
+					<tr>
+						<td>Longitude</td>
+						<td>{{ asset.asset_longitude }}</td>
+					</tr>
+					<tr>
+						<td>Price</td>
+						<td>{{ asset.asset_price }}</td>
+					</tr>
+					<tr>
+						<td>{{mymap.html}}</td>
+					</tr>
+
+					</tbody>
+				</table>
+		
+			</div>
+	
+			<div id="menu1" class="tab-pane fade">
+
+				<table class="table table-striped" id="transactions">
+					<thead>
+					<tr>
+						<th class="col-md-1">ID</th>
+						<th class="col-md-2">Asset</th>
+						<th class="col-md-2">Type</th>
+						<th class="col-md-1">Value</th>
+						<th class="col-md-2">Timestamp</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for transaction in transactions %}
+					<tr>
+						<td>{{ transaction.transaction_id }}</td>
+						<td><a href="/asset_details/{{ transaction.asset_id }}">{{ transaction.asset_name }}</a></td>
+						<td>{{ transaction.transaction_type }}</td>
+						<td>{{ transaction.transaction_value }}</td>			
+						<td>{{ transaction.transaction_timestamp }}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+		
+			</div>
+	
+			<div id="menu2" class="tab-pane fade">
+				<h3>Ass tags</h3>
+			</div>
+	
+			<div id="menu3" class="tab-pane fade">
+				<h3>Ass readers</h3>
+			</div>
+		</div>
+	
+
+
+
+
 		</div>
 	</div>
 {% endblock %}

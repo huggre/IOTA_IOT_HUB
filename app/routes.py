@@ -20,6 +20,8 @@ from app.forms import TagForm
 from app.forms import DepositForm
 from app.forms import WithdrawalForm
 
+from app.forms import AssetList
+
 # Imports table objects
 from app.tables import AccountsTable
 from app.tables import AssetsTable
@@ -425,7 +427,22 @@ def asset_details(id):
             markers=my_marker,
             center_on_user_location=False
             )
-        return render_template("asset_details.html",asset = asset, mymap = mymap)
+
+
+        # Get asset transactions
+        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_assets)
+        .join(tbl_transaction_types)
+        .join(tbl_assets)
+        .filter(tbl_transactions.asset_id == id)
+        .add_columns(tbl_transactions.id.label('transaction_id'), 
+        tbl_assets.id.label('asset_id'), 
+        tbl_assets.name.label('asset_name'), 
+        tbl_transactions.timestamp.label('transaction_timestamp'), 
+        tbl_transaction_types.name.label('transaction_type'), 
+        tbl_transactions.transaction_value.label('transaction_value'))
+        )
+
+        return render_template("asset_details.html",asset = asset, mymap=mymap, transactions = transactions)
     else:
         flash('Asset ID: ' + str(id) + ' does not exist!!')
         return render_template('item_does_not_exist.html', title='Item does not exist!!')
@@ -797,3 +814,18 @@ def members():
 @app.route('/test')
 def test():
     return render_template("test.html")
+
+@app.route('/asset_list')
+def asset_list():
+
+    form = AssetList()
+    
+    # Add asset types to SelectField
+    #form.asset_type.choices = [(asstype_row.id, asstype_row.name) for asstype_row in tbl_asset_types.query.all()]
+    form.asset_list.choices = [(asslist_row.id, asslist_row.name) for asslist_row in tbl_assets.query.all()]
+
+    # Add user accounts to SelectField
+    #form.asset_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
+    
+
+    return render_template("asset_list.html", title='Asset List', form=form)

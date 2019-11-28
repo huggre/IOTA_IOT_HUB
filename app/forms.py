@@ -78,3 +78,7 @@ class WithdrawalForm(FlaskForm):
     account = SelectField('Account', coerce=int)
     value = FloatField('Amount', default='0.0', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+# Assets form
+class AssetList(FlaskForm):
+    asset_list = SelectField('Asset', coerce=int)

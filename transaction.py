@@ -138,7 +138,7 @@ Common asset types are: Parking Lot, Sports Venue etc.
 
 """)
 
-sensor_UID = 'SENS2'
+sensor_UID = 'SENS12345'
 assetID = 1
 
 ans=True

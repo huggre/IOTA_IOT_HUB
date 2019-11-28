@@ -3,19 +3,25 @@
 {% block app_content %}
 <!-- Tab links -->
 
-<div class="container">
-    <table>
-    <tr>
-    <td>
-    <select class="form-control form-control-lg">
-            <option>Large select</option>
-            <option>Large select</option>
-            <option>Large select</option>
-            <option>Large select</option>
-    </select>
-    </td>
-    <td align="right"><a class="btn btn-primary">Edit</a></td>
-    </tr>
+<div class="row">
+    <div class="col-md-10">
+    <table style="width:100%">
+        <tr>
+            <td><h1>My assets</h1></td>
+            <td align="right"><a class="btn btn-primary">New asset</a></td>
+        </tr>
+        <tr>
+            <td>
+            <select class="form-control form-control-lg">
+                <option>Large select</option>
+                <option>Large select</option>
+                <option>Large select</option>
+                <option>Large select</option>
+            </select>
+            </td>
+            <td align="right"><a class="btn btn-primary">Edit</a></td>
+        </tr>
+
     </table>
 
     <hr>
@@ -27,118 +33,30 @@
         <li><a data-toggle="tab" href="#menu3">Asset Readers</a></li>
     </ul>
 
+
     <div class="tab-content">
 
         <div id="home" class="tab-pane fade in active">
-            <h3>HOME</h3>
-            <p>Pretty simple example of Bootstrap dynamic tabs.</p>
+            <h3>Ass details</h3>
         </div>
 
         <div id="menu1" class="tab-pane fade">
-            <h3>Instruction</h3>
-            <p>
-                To make the tabs toggleable, add the <b>data-toggle="tab"</b> attribute to each link. Then add a <b>.tab-pane</b>
-                class with a unique ID for every tab and wrap them inside a div element with class <b>.tab-content</b>.
-            </p>
-            <p>
-                Example:
-            </p>
-                <div class="w3-code htmlHigh">
-                    &lt;ul class="nav nav-tabs"&gt;<br>
-                    &nbsp;&nbsp;&lt;li&gt;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;a data-toggle="tab" href="#tab1"&gt;Link to tab1&lt;/a&gt;<br>
-                    &nbsp;&nbsp;&lt;/li&gt;<br>
-                    &nbsp;&nbsp;&lt;li&gt;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&lt;a data-toggle="tab" href="#tab2"&gt;Link to tab2&lt;/a&gt;<br>
-                    &nbsp;&nbsp;&lt;/li&gt;<br>
-                    &lt;/ul&gt;<br>
-                    &lt;div class="tab-content"&gt;<br>
-                    &nbsp;&nbsp;&lt;div id="tab1" class="tab-pane fade"&gt;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;This is the first tab.<br>
-                    &nbsp;&nbsp;&lt;/div&gt;<br>
-                    &nbsp;&nbsp;&lt;div id="tab2" class="tab-pane fade"&gt;<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;This is the second tab.<br>
-                    &nbsp;&nbsp;&lt;/div&gt;<br>
-                    &lt;/div&gt;
-                </div>
+            <h3>Ass trans</h3>
         </div>
 
         <div id="menu2" class="tab-pane fade">
-            <h3>Comments</h3>
-
-            <div class="media">
-                <div class="media-left">
-                    <img src="https://www.stihi.ru/pics/2014/07/25/1682.jpg" class="media-object" style="width:45px">
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">Tom Cruise
-                        <small><i>Posted on April 19, 2017</i></small>
-                    </h4>
-                    <p>The post is very useful. Thanks for your contribution!</p>
-
-                    <!-- Nested comment -->
-                    <div class="media">
-                        <div class="media-left">
-                            <img src="https://api.sololearn.com/Uploads/Avatars/779917.jpg" class="media-object"
-                                 style="width:45px">
-                        </div>
-                        <div class="media-body">
-                            <h4 class="media-heading">Igor Makarsky
-                                <small><i>Posted on April 20, 2017</i></small>
-                            </h4>
-                            <p>You're welcome!</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Nested comment -->
-                <div class="media">
-                    <div class="media-left">
-                        <img src="http://i2.esmas.com/2009/05/01/47228/jim-carrey-300x350.jpg" class="media-object"
-                             style="width:45px">
-                    </div>
-                    <div class="media-body">
-                        <h4 class="media-heading">Jim Carrey
-                            <small><i>Posted on April 19, 2017</i></small>
-                        </h4>
-                        <p>Dude, you SUCK! I can do better!</p>
-
-                        <!-- Nested comment 2 -->
-                        <div class="media">
-                            <div class="media-left">
-                                <img src="http://m.jumpstart.com/JumpstartNew/brands/pom/img/characters/pom-skipper02.png"
-                                     class="media-object" style="width:45px">
-                            </div>
-                            <div class="media-body">
-                                <h4 class="media-heading">Skipper
-                                    <small><i>Posted on April 21, 2017</i></small>
-                                </h4>
-                                <p>Hey Jim! I'm your fan!</p>
-                            </div>
-                        </div><!-- End comment 2 -->
-
-                    </div>
-                </div><!-- End comment -->
-
-            </div>
+            <h3>Ass tags</h3>
         </div>
 
         <div id="menu3" class="tab-pane fade">
-            <h3>Author</h3>
-            <div class="media">
-                <div class="media-left media-top">
-                    <img src="https://api.sololearn.com/Uploads/Avatars/779917.jpg" class="media-object img-circle"
-                         style="width:80px">
-                </div>
-                <div class="media-body">
-                    <h4 class="media-heading">Igor Makarsky</h4>
-                    <p>Belarusian. 23 years old. Full-stack PHP developer. Sololearn user.</p>
-                    <p><a href="https://www.sololearn.com/Profile/779917">My Sololearn profile</a></p>
-                </div>
-            </div>
-            <hr>
+            <h3>Ass readers</h3>
         </div>
     </div>
+
+
+
+    </div>
 </div>
+
 
 {% endblock %}
