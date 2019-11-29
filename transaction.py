@@ -49,7 +49,8 @@ def add_assettype(asset_type_name):
 
     print("\n Asset Type: " + asset_type_name + " added to DB")
 
-def register_tag(tag_UID, assetID, tag_description):
+def register_tag(tag_UID, tag_description):
+
     # Check if tag UID already exist
     tag = (db.session.query(tbl_tags)
         .filter(tbl_tags.tag_UID == tag_UID)
@@ -59,6 +60,7 @@ def register_tag(tag_UID, assetID, tag_description):
     if tag is None:
         tag = tbl_tags()
         tag.tag_UID = tag_UID
+        tag.description = tag_description
         db.session.add(tag)
 
         # Commit new transaction to DB
@@ -69,14 +71,19 @@ def register_tag(tag_UID, assetID, tag_description):
     else:
         print("Tag UID already exist")
 
+def assign_tag(tag_UID, assetID):
+
+    # Check if tag is allready assigned to asset
+
     # Assign tag to Asset
     asset_tag = tbl_asset_tags()
     asset_tag.asset_id = assetID
     asset_tag.tag_UID = tag_UID
-    asset_tag.description = tag_description
     asset_tag.asset_tag_balance = 0.0
     db.session.add(asset_tag)
     db.session.commit()
+
+    print("Done")
 
 def register_sensor(sensor_UID, assetID, sensor_description):
     # Check if tag UID already exist
@@ -97,6 +104,8 @@ def register_sensor(sensor_UID, assetID, sensor_description):
 
     else:
         print("Sensor UID already exist")
+
+    # Check if sensor is allready assigned to asset
 
     # Assign sensor to Asset
     asset_sensor = tbl_asset_sensors()
@@ -138,33 +147,39 @@ Common asset types are: Parking Lot, Sports Venue etc.
 
 """)
 
-sensor_UID = 'SENS12345'
+sensor_UID = 'THISISSENSORUID'
 assetID = 1
 
 ans=True
 while ans:
     print ("""
-    0.Register Sensor
-    1.Register Tag
-    2.Deposit
-    3.Exit/Quit
+    1.Register Sensor
+    2.Register Tag
+    3.Assign Tag to Asset
+    4.Deposit
+    5.Exit/Quit
     """)
     ans=input("What would you like to do? ") 
-    if ans=="0":
+    if ans=="1":
         sensor_UID = input("\n Specify Sensor UID:")
         sensor_description = input("\n Specify Sensor Description:")
         register_sensor(sensor_UID, assetID, sensor_description)
-    elif ans=="1":
+    elif ans=="2":
         tag_UID = input("\n Specify Tag UID:")
         tag_description = input("\n Specify Tag Description:")
-        register_tag(tag_UID, assetID, tag_description)
-    elif ans=="2":
+        if tag_description == "":
+            tag_description = "None"
+        register_tag(tag_UID, tag_description)
+    elif ans=="3":
+        tag_UID = input("\n Specify Tag UID:")
+        assign_tag(tag_UID, assetID)
+    elif ans=="4":
         #sensor_UID = input("\n Specify Sensor UID:")
         tag_UID = input("\n Specify Tag UID:")
         trans_type = 1
         value = input("\n Specify Value:")
         add_transaction(sensor_UID, tag_UID, assetID, trans_type, value)
-    elif ans=="3":
+    elif ans=="5":
       exit()
     elif ans !="":
       print("\n Not Valid Choice Try again") 

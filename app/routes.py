@@ -47,6 +47,8 @@ from app.models import tbl_members
 from app.models import tbl_assets
 from app.models import tbl_asset_types
 from app.models import tbl_tags
+from app.models import tbl_asset_tags
+from app.models import tbl_asset_sensors
 #from app.models import tbl_tag_types
 from app.models import tbl_sensors
 #from app.models import tbl_sensor_types
@@ -430,19 +432,38 @@ def asset_details(id):
 
 
         # Get asset transactions
-        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_assets)
+        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_assets, tbl_tags)
         .join(tbl_transaction_types)
         .join(tbl_assets)
+        .join(tbl_tags)
         .filter(tbl_transactions.asset_id == id)
         .add_columns(tbl_transactions.id.label('transaction_id'), 
         tbl_assets.id.label('asset_id'), 
         tbl_assets.name.label('asset_name'), 
+        tbl_tags.description.label('tag_description'), 
         tbl_transactions.timestamp.label('transaction_timestamp'), 
         tbl_transaction_types.name.label('transaction_type'), 
         tbl_transactions.transaction_value.label('transaction_value'))
         )
 
-        return render_template("asset_details.html",asset = asset, mymap=mymap, transactions = transactions)
+        # Get asset tags
+        tags = (db.session.query(tbl_asset_tags, tbl_tags, tbl_assets)
+        .join(tbl_tags)
+        .join(tbl_assets)
+        .filter(tbl_asset_tags.asset_id == id)
+        .add_columns(tbl_asset_tags.asset_tag_balance.label('asset_tag_balance'), 
+        tbl_tags.description.label('tag_description'))
+        )
+
+        # Get asset sensors
+        sensors = (db.session.query(tbl_asset_sensors, tbl_assets)
+        .join(tbl_assets)
+        .filter(tbl_asset_sensors.asset_id == id)
+        .add_columns(tbl_asset_sensors.sensor_UID.label('sensor_UID'), 
+        tbl_asset_sensors.description.label('sensor_description'))
+        )
+
+        return render_template("asset_details.html",asset = asset, mymap=mymap, transactions = transactions, tags = tags, sensors = sensors)
     else:
         flash('Asset ID: ' + str(id) + ' does not exist!!')
         return render_template('item_does_not_exist.html', title='Item does not exist!!')
