@@ -42,9 +42,10 @@ class tbl_members(UserMixin, db.Model):
 #        return '<SensorType {}>'.format(self.name)
 
 # Define the Sensors table
-class tbl_sensors(db.Model):
+""" class tbl_sensors(db.Model):
     #id = db.Column(db.Integer, primary_key=True)
     sensor_UID = db.Column(db.String(64), primary_key=True)
+    sensor_type_id = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
     #description = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
@@ -55,7 +56,18 @@ class tbl_sensors(db.Model):
     transactions = db.relationship('tbl_transactions', backref='trans_sensor_id', lazy='dynamic')
 
     def __repr__(self):
-        return '<Sensor {}>'.format(self.name)
+        return '<Sensor {}>'.format(self.name) """
+
+
+# Define the Sensor types table
+class tbl_sensor_types(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+    #sensors = db.relationship('tbl_asset_sensors', backref='sensor_type', lazy='dynamic')
+
+    def __repr__(self):
+        return '<SensorType {}>'.format(self.name)
+
 
 # Define the Asset types table
 class tbl_asset_types(db.Model):
@@ -107,7 +119,9 @@ class tbl_asset_tags(db.Model):
 class tbl_asset_sensors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
-    sensor_UID = db.Column(db.String(64), db.ForeignKey('tbl_sensors.sensor_UID'))
+    sensor_UID = db.Column(db.String(64))
+    sensor_type = db.Column(db.String(64), db.ForeignKey('tbl_sensor_types.id'))
+    #sensor_UID = db.Column(db.String(64), db.ForeignKey('tbl_sensors.sensor_UID'))
     description = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
@@ -163,7 +177,7 @@ class tbl_transactions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     tag_UID = db.Column(db.Integer, db.ForeignKey('tbl_tags.tag_UID'))
     #tag_account_id = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
-    sensor_UID = db.Column(db.Integer, db.ForeignKey('tbl_sensors.sensor_UID'))
+    sensor_id = db.Column(db.Integer, db.ForeignKey('tbl_asset_sensors.id'))
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
     #asset_account_id = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
     transaction_type_id = db.Column(db.Integer, db.ForeignKey('tbl_transaction_types.id'))

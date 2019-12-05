@@ -15,7 +15,7 @@
 			<li class="active"><a data-toggle="tab" href="#home">Asset Details</a></li>
 			<li><a data-toggle="tab" href="#menu1">Asset Transactions</a></li>
 			<li><a data-toggle="tab" href="#menu2">Asset Tags</a></li>
-			<li><a data-toggle="tab" href="#menu3">Asset Readers</a></li>
+			<li><a data-toggle="tab" href="#menu3">Asset Sensors</a></li>
 		</ul>
 	
 	
@@ -135,6 +135,7 @@
 					<thead>
 					<tr>
 						<th class="col-md-2">Sensor UID</th>
+						<th class="col-md-2">Sensor Type</th>
 						<th class="col-md-2">Sensor Description</th>
 					</tr>
 					</thead>
@@ -142,6 +143,7 @@
 					{% for sensor in sensors %}
 					<tr>
 						<td>{{ sensor.sensor_UID }}</td>
+						<td>{{ sensor.sensor_type }}</td>
 						<td>{{ sensor.sensor_description }}</td>
 					</tr>
 					{% endfor %}

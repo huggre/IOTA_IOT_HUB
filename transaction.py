@@ -15,7 +15,7 @@ from app.models import tbl_assets
 from app.models import tbl_asset_types
 from app.models import tbl_tags
 #from app.models import tbl_tag_types
-from app.models import tbl_sensors
+#from app.models import tbl_sensors
 #from app.models import tbl_sensor_types
 #from app.models import tbl_accounts
 from app.models import tbl_transactions
@@ -85,42 +85,23 @@ def assign_tag(tag_UID, assetID):
 
     print("Done")
 
-def register_sensor(sensor_UID, assetID, sensor_description):
-    # Check if tag UID already exist
-    sensor = (db.session.query(tbl_sensors)
-        .filter(tbl_sensors.sensor_UID == sensor_UID)
-        .add_columns(tbl_sensors.sensor_UID.label('sensor_UID'))
-        .first())
-
-    if sensor is None:
-        sensor = tbl_sensors()
-        sensor.sensor_UID = sensor_UID
-        db.session.add(sensor)
-
-        # Commit new transaction to DB
-        db.session.commit()
-
-        print("Sensor sucessfully created")
-
-    else:
-        print("Sensor UID already exist")
-
-    # Check if sensor is allready assigned to asset
+def register_sensor(sensor_UID, assetID, sensor_type, sensor_description):
 
     # Assign sensor to Asset
     asset_sensor = tbl_asset_sensors()
     asset_sensor.asset_id = assetID
     asset_sensor.sensor_UID = sensor_UID
+    asset_sensor.sensor_type = sensor_type
     asset_sensor.description = sensor_description
     db.session.add(asset_sensor)
     db.session.commit()
 
-def add_transaction(sensor_UID, tag_UID, assetID, trans_type, value):
+def add_transaction(sensorID, tag_UID, assetID, trans_type, value):
     
     # Add new transaction to the transactions table
     trans = tbl_transactions()
     trans.tag_UID = tag_UID
-    trans.sensor_UID = sensor_UID
+    trans.sensor_id = sensorID
     trans.asset_id = assetID
     trans.transaction_type_id = trans_type
     trans.transaction_value = value
@@ -149,6 +130,8 @@ Common asset types are: Parking Lot, Sports Venue etc.
 
 sensor_UID = 'THISISSENSORUID'
 assetID = 1
+sensorID = 3
+sensor_type = 1
 
 ans=True
 while ans:
@@ -163,7 +146,7 @@ while ans:
     if ans=="1":
         sensor_UID = input("\n Specify Sensor UID:")
         sensor_description = input("\n Specify Sensor Description:")
-        register_sensor(sensor_UID, assetID, sensor_description)
+        register_sensor(sensor_UID, assetID, sensor_type, sensor_description)
     elif ans=="2":
         tag_UID = input("\n Specify Tag UID:")
         tag_description = input("\n Specify Tag Description:")
@@ -178,7 +161,7 @@ while ans:
         tag_UID = input("\n Specify Tag UID:")
         trans_type = 1
         value = input("\n Specify Value:")
-        add_transaction(sensor_UID, tag_UID, assetID, trans_type, value)
+        add_transaction(sensorID, tag_UID, assetID, trans_type, value)
     elif ans=="5":
       exit()
     elif ans !="":

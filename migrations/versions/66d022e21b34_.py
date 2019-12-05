@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 8558486a7568
+Revision ID: 66d022e21b34
 Revises: 
-Create Date: 2019-11-29 13:18:17.016068
+Create Date: 2019-12-05 13:07:04.324000
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8558486a7568'
+revision = '66d022e21b34'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,14 +39,12 @@ def upgrade():
     op.create_index(op.f('ix_tbl_members_modified'), 'tbl_members', ['modified'], unique=False)
     op.create_index(op.f('ix_tbl_members_name'), 'tbl_members', ['name'], unique=True)
     op.create_index(op.f('ix_tbl_members_phone'), 'tbl_members', ['phone'], unique=False)
-    op.create_table('tbl_sensors',
-    sa.Column('sensor_UID', sa.String(length=64), nullable=False),
-    sa.Column('created', sa.DateTime(), nullable=True),
-    sa.Column('modified', sa.DateTime(), nullable=True),
-    sa.PrimaryKeyConstraint('sensor_UID')
+    op.create_table('tbl_sensor_types',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=64), nullable=True),
+    sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_tbl_sensors_created'), 'tbl_sensors', ['created'], unique=False)
-    op.create_index(op.f('ix_tbl_sensors_modified'), 'tbl_sensors', ['modified'], unique=False)
+    op.create_index(op.f('ix_tbl_sensor_types_name'), 'tbl_sensor_types', ['name'], unique=True)
     op.create_table('tbl_tags',
     sa.Column('tag_UID', sa.String(length=64), nullable=False),
     sa.Column('description', sa.String(length=64), nullable=True),
@@ -94,11 +92,12 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('asset_id', sa.Integer(), nullable=True),
     sa.Column('sensor_UID', sa.String(length=64), nullable=True),
+    sa.Column('sensor_type', sa.String(length=64), nullable=True),
     sa.Column('description', sa.String(length=64), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['asset_id'], ['tbl_assets.id'], ),
-    sa.ForeignKeyConstraint(['sensor_UID'], ['tbl_sensors.sensor_UID'], ),
+    sa.ForeignKeyConstraint(['sensor_type'], ['tbl_sensor_types.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tbl_asset_sensors_created'), 'tbl_asset_sensors', ['created'], unique=False)
@@ -119,13 +118,13 @@ def upgrade():
     op.create_table('tbl_transactions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('tag_UID', sa.Integer(), nullable=True),
-    sa.Column('sensor_UID', sa.Integer(), nullable=True),
+    sa.Column('sensor_id', sa.Integer(), nullable=True),
     sa.Column('asset_id', sa.Integer(), nullable=True),
     sa.Column('transaction_type_id', sa.Integer(), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('transaction_value', sa.Float(), nullable=True),
     sa.ForeignKeyConstraint(['asset_id'], ['tbl_assets.id'], ),
-    sa.ForeignKeyConstraint(['sensor_UID'], ['tbl_sensors.sensor_UID'], ),
+    sa.ForeignKeyConstraint(['sensor_id'], ['tbl_asset_sensors.id'], ),
     sa.ForeignKeyConstraint(['tag_UID'], ['tbl_tags.tag_UID'], ),
     sa.ForeignKeyConstraint(['transaction_type_id'], ['tbl_transaction_types.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -154,9 +153,8 @@ def downgrade():
     op.drop_index(op.f('ix_tbl_tags_modified'), table_name='tbl_tags')
     op.drop_index(op.f('ix_tbl_tags_created'), table_name='tbl_tags')
     op.drop_table('tbl_tags')
-    op.drop_index(op.f('ix_tbl_sensors_modified'), table_name='tbl_sensors')
-    op.drop_index(op.f('ix_tbl_sensors_created'), table_name='tbl_sensors')
-    op.drop_table('tbl_sensors')
+    op.drop_index(op.f('ix_tbl_sensor_types_name'), table_name='tbl_sensor_types')
+    op.drop_table('tbl_sensor_types')
     op.drop_index(op.f('ix_tbl_members_phone'), table_name='tbl_members')
     op.drop_index(op.f('ix_tbl_members_name'), table_name='tbl_members')
     op.drop_index(op.f('ix_tbl_members_modified'), table_name='tbl_members')

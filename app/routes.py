@@ -50,8 +50,8 @@ from app.models import tbl_tags
 from app.models import tbl_asset_tags
 from app.models import tbl_asset_sensors
 #from app.models import tbl_tag_types
-from app.models import tbl_sensors
-#from app.models import tbl_sensor_types
+#from app.models import tbl_sensors
+from app.models import tbl_sensor_types
 #from app.models import tbl_accounts
 from app.models import tbl_transactions
 from app.models import tbl_transaction_types
@@ -432,14 +432,11 @@ def asset_details(id):
 
 
         # Get asset transactions
-        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_assets, tbl_tags)
+        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_tags)
         .join(tbl_transaction_types)
-        .join(tbl_assets)
         .join(tbl_tags)
         .filter(tbl_transactions.asset_id == id)
         .add_columns(tbl_transactions.id.label('transaction_id'), 
-        tbl_assets.id.label('asset_id'), 
-        tbl_assets.name.label('asset_name'), 
         tbl_tags.description.label('tag_description'), 
         tbl_transactions.timestamp.label('transaction_timestamp'), 
         tbl_transaction_types.name.label('transaction_type'), 
@@ -447,21 +444,23 @@ def asset_details(id):
         )
 
         # Get asset tags
-        tags = (db.session.query(tbl_asset_tags, tbl_tags, tbl_assets)
+        tags = (db.session.query(tbl_asset_tags, tbl_tags)
         .join(tbl_tags)
-        .join(tbl_assets)
         .filter(tbl_asset_tags.asset_id == id)
         .add_columns(tbl_asset_tags.asset_tag_balance.label('asset_tag_balance'), 
         tbl_tags.description.label('tag_description'))
         )
 
         # Get asset sensors
-        sensors = (db.session.query(tbl_asset_sensors, tbl_assets)
-        .join(tbl_assets)
+        sensors = (db.session.query(tbl_asset_sensors, tbl_sensor_types)
+        .join(tbl_sensor_types)
         .filter(tbl_asset_sensors.asset_id == id)
         .add_columns(tbl_asset_sensors.sensor_UID.label('sensor_UID'), 
+        tbl_sensor_types.name.label('sensor_type'),
         tbl_asset_sensors.description.label('sensor_description'))
         )
+
+
 
         return render_template("asset_details.html",asset = asset, mymap=mymap, transactions = transactions, tags = tags, sensors = sensors)
     else:
