@@ -43,6 +43,7 @@ class AssetForm(FlaskForm):
     asset_longitude = FloatField('Longitude', default='0.0', validators=[DataRequired()])
     #asset_account = SelectField('Account', coerce=int)
     asset_price = FloatField('Price', default='0.0', validators=[DataRequired()])
+    asset_public = BooleanField('Public', default='checked')
     submit = SubmitField('Submit')
 
 # Form for new/edit Sensor
@@ -60,11 +61,11 @@ class AccountForm(FlaskForm):
 
 # Form for new/edit Tag
 class TagForm(FlaskForm):
-    tag_name = StringField('Name', validators=[DataRequired()])
+    tag_name = StringField('Description', validators=[DataRequired()])
     tag_type = SelectField('Type', coerce=int)
-    tag_account = SelectField('Account', coerce=int)
+    #tag_account = SelectField('Account', coerce=int)
     tag_UID = StringField('UID', validators=[DataRequired()])
-    tag_KEY = StringField('KEY', validators=[DataRequired()])
+    #tag_KEY = StringField('KEY', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 # Form for new Deposit

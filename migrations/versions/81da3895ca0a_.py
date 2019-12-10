@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 66d022e21b34
+Revision ID: 81da3895ca0a
 Revises: 
-Create Date: 2019-12-05 13:07:04.324000
+Create Date: 2019-12-10 10:34:07.306368
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '66d022e21b34'
+revision = '81da3895ca0a'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -45,15 +45,12 @@ def upgrade():
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tbl_sensor_types_name'), 'tbl_sensor_types', ['name'], unique=True)
-    op.create_table('tbl_tags',
-    sa.Column('tag_UID', sa.String(length=64), nullable=False),
-    sa.Column('description', sa.String(length=64), nullable=True),
-    sa.Column('created', sa.DateTime(), nullable=True),
-    sa.Column('modified', sa.DateTime(), nullable=True),
-    sa.PrimaryKeyConstraint('tag_UID')
+    op.create_table('tbl_tag_types',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('name', sa.String(length=64), nullable=True),
+    sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_tbl_tags_created'), 'tbl_tags', ['created'], unique=False)
-    op.create_index(op.f('ix_tbl_tags_modified'), 'tbl_tags', ['modified'], unique=False)
+    op.create_index(op.f('ix_tbl_tag_types_name'), 'tbl_tag_types', ['name'], unique=True)
     op.create_table('tbl_transaction_errors',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('mqtt_msg', sa.String(length=64), nullable=True),
@@ -77,6 +74,7 @@ def upgrade():
     sa.Column('latitude', sa.Float(), nullable=True),
     sa.Column('longitude', sa.Float(), nullable=True),
     sa.Column('price', sa.Float(), nullable=True),
+    sa.Column('public', sa.Boolean(), nullable=True),
     sa.Column('balance', sa.Float(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
@@ -88,44 +86,62 @@ def upgrade():
     )
     op.create_index(op.f('ix_tbl_assets_created'), 'tbl_assets', ['created'], unique=False)
     op.create_index(op.f('ix_tbl_assets_modified'), 'tbl_assets', ['modified'], unique=False)
-    op.create_table('tbl_asset_sensors',
+    op.create_table('tbl_tags',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('asset_id', sa.Integer(), nullable=True),
-    sa.Column('sensor_UID', sa.String(length=64), nullable=True),
-    sa.Column('sensor_type', sa.String(length=64), nullable=True),
-    sa.Column('description', sa.String(length=64), nullable=True),
+    sa.Column('tag_UID', sa.String(length=64), nullable=True),
+    sa.Column('name', sa.String(length=64), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
-    sa.ForeignKeyConstraint(['asset_id'], ['tbl_assets.id'], ),
-    sa.ForeignKeyConstraint(['sensor_type'], ['tbl_sensor_types.id'], ),
+    sa.Column('tag_type', sa.Integer(), nullable=True),
+    sa.Column('owner', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['owner'], ['tbl_members.id'], ),
+    sa.ForeignKeyConstraint(['tag_type'], ['tbl_tag_types.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_index(op.f('ix_tbl_asset_sensors_created'), 'tbl_asset_sensors', ['created'], unique=False)
-    op.create_index(op.f('ix_tbl_asset_sensors_modified'), 'tbl_asset_sensors', ['modified'], unique=False)
+    op.create_index(op.f('ix_tbl_tags_created'), 'tbl_tags', ['created'], unique=False)
+    op.create_index(op.f('ix_tbl_tags_modified'), 'tbl_tags', ['modified'], unique=False)
+    op.create_index(op.f('ix_tbl_tags_tag_UID'), 'tbl_tags', ['tag_UID'], unique=True)
     op.create_table('tbl_asset_tags',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('asset_id', sa.Integer(), nullable=True),
-    sa.Column('tag_UID', sa.String(length=64), nullable=True),
+    sa.Column('tag_id', sa.Integer(), nullable=True),
     sa.Column('asset_tag_balance', sa.Float(), nullable=True),
     sa.Column('created', sa.DateTime(), nullable=True),
     sa.Column('modified', sa.DateTime(), nullable=True),
     sa.ForeignKeyConstraint(['asset_id'], ['tbl_assets.id'], ),
-    sa.ForeignKeyConstraint(['tag_UID'], ['tbl_tags.tag_UID'], ),
+    sa.ForeignKeyConstraint(['tag_id'], ['tbl_tags.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_tbl_asset_tags_created'), 'tbl_asset_tags', ['created'], unique=False)
     op.create_index(op.f('ix_tbl_asset_tags_modified'), 'tbl_asset_tags', ['modified'], unique=False)
+    op.create_table('tbl_sensors',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('sensor_UID', sa.String(length=64), nullable=True),
+    sa.Column('name', sa.String(length=64), nullable=True),
+    sa.Column('sensor_type', sa.Integer(), nullable=True),
+    sa.Column('parent_asset', sa.Integer(), nullable=True),
+    sa.Column('owner', sa.Integer(), nullable=True),
+    sa.Column('created', sa.DateTime(), nullable=True),
+    sa.Column('modified', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['owner'], ['tbl_members.id'], ),
+    sa.ForeignKeyConstraint(['parent_asset'], ['tbl_assets.id'], ),
+    sa.ForeignKeyConstraint(['sensor_type'], ['tbl_sensor_types.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_tbl_sensors_created'), 'tbl_sensors', ['created'], unique=False)
+    op.create_index(op.f('ix_tbl_sensors_modified'), 'tbl_sensors', ['modified'], unique=False)
+    op.create_index(op.f('ix_tbl_sensors_sensor_UID'), 'tbl_sensors', ['sensor_UID'], unique=True)
     op.create_table('tbl_transactions',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('tag_UID', sa.Integer(), nullable=True),
+    sa.Column('tag_id', sa.Integer(), nullable=True),
     sa.Column('sensor_id', sa.Integer(), nullable=True),
     sa.Column('asset_id', sa.Integer(), nullable=True),
     sa.Column('transaction_type_id', sa.Integer(), nullable=True),
     sa.Column('timestamp', sa.DateTime(), nullable=True),
     sa.Column('transaction_value', sa.Float(), nullable=True),
     sa.ForeignKeyConstraint(['asset_id'], ['tbl_assets.id'], ),
-    sa.ForeignKeyConstraint(['sensor_id'], ['tbl_asset_sensors.id'], ),
-    sa.ForeignKeyConstraint(['tag_UID'], ['tbl_tags.tag_UID'], ),
+    sa.ForeignKeyConstraint(['sensor_id'], ['tbl_sensors.id'], ),
+    sa.ForeignKeyConstraint(['tag_id'], ['tbl_tags.id'], ),
     sa.ForeignKeyConstraint(['transaction_type_id'], ['tbl_transaction_types.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -137,12 +153,17 @@ def downgrade():
     # ### commands auto generated by Alembic - please adjust! ###
     op.drop_index(op.f('ix_tbl_transactions_timestamp'), table_name='tbl_transactions')
     op.drop_table('tbl_transactions')
+    op.drop_index(op.f('ix_tbl_sensors_sensor_UID'), table_name='tbl_sensors')
+    op.drop_index(op.f('ix_tbl_sensors_modified'), table_name='tbl_sensors')
+    op.drop_index(op.f('ix_tbl_sensors_created'), table_name='tbl_sensors')
+    op.drop_table('tbl_sensors')
     op.drop_index(op.f('ix_tbl_asset_tags_modified'), table_name='tbl_asset_tags')
     op.drop_index(op.f('ix_tbl_asset_tags_created'), table_name='tbl_asset_tags')
     op.drop_table('tbl_asset_tags')
-    op.drop_index(op.f('ix_tbl_asset_sensors_modified'), table_name='tbl_asset_sensors')
-    op.drop_index(op.f('ix_tbl_asset_sensors_created'), table_name='tbl_asset_sensors')
-    op.drop_table('tbl_asset_sensors')
+    op.drop_index(op.f('ix_tbl_tags_tag_UID'), table_name='tbl_tags')
+    op.drop_index(op.f('ix_tbl_tags_modified'), table_name='tbl_tags')
+    op.drop_index(op.f('ix_tbl_tags_created'), table_name='tbl_tags')
+    op.drop_table('tbl_tags')
     op.drop_index(op.f('ix_tbl_assets_modified'), table_name='tbl_assets')
     op.drop_index(op.f('ix_tbl_assets_created'), table_name='tbl_assets')
     op.drop_table('tbl_assets')
@@ -150,9 +171,8 @@ def downgrade():
     op.drop_table('tbl_transaction_types')
     op.drop_index(op.f('ix_tbl_transaction_errors_timestamp'), table_name='tbl_transaction_errors')
     op.drop_table('tbl_transaction_errors')
-    op.drop_index(op.f('ix_tbl_tags_modified'), table_name='tbl_tags')
-    op.drop_index(op.f('ix_tbl_tags_created'), table_name='tbl_tags')
-    op.drop_table('tbl_tags')
+    op.drop_index(op.f('ix_tbl_tag_types_name'), table_name='tbl_tag_types')
+    op.drop_table('tbl_tag_types')
     op.drop_index(op.f('ix_tbl_sensor_types_name'), table_name='tbl_sensor_types')
     op.drop_table('tbl_sensor_types')
     op.drop_index(op.f('ix_tbl_members_phone'), table_name='tbl_members')

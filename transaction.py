@@ -14,16 +14,16 @@ from app.models import tbl_members
 from app.models import tbl_assets
 from app.models import tbl_asset_types
 from app.models import tbl_tags
-#from app.models import tbl_tag_types
-#from app.models import tbl_sensors
-#from app.models import tbl_sensor_types
+from app.models import tbl_tag_types
+from app.models import tbl_sensors
+from app.models import tbl_sensor_types
 #from app.models import tbl_accounts
 from app.models import tbl_transactions
 #from app.models import tbl_deposits
 #from app.models import tbl_withdrawals
 from app.models import tbl_transaction_errors
 from app.models import tbl_asset_tags
-from app.models import tbl_asset_sensors
+#from app.models import tbl_asset_sensors
 
 def add_sensortype(sensor_type_name):
 
@@ -49,7 +49,7 @@ def add_assettype(asset_type_name):
 
     print("\n Asset Type: " + asset_type_name + " added to DB")
 
-def register_tag(tag_UID, tag_description):
+def register_tag(tag_UID, tag_name, tag_type, tag_owner):
 
     # Check if tag UID already exist
     tag = (db.session.query(tbl_tags)
@@ -60,7 +60,9 @@ def register_tag(tag_UID, tag_description):
     if tag is None:
         tag = tbl_tags()
         tag.tag_UID = tag_UID
-        tag.description = tag_description
+        tag.name = tag_name
+        tag.tag_type = tag_type
+        tag.owner = tag_owner
         db.session.add(tag)
 
         # Commit new transaction to DB
@@ -73,36 +75,63 @@ def register_tag(tag_UID, tag_description):
 
 def assign_tag(tag_UID, assetID):
 
+    # Get tag_id based on tag_UID
+    tag = (db.session.query(tbl_tags)
+        .filter(tbl_tags.tag_UID == tag_UID)
+        .add_columns(tbl_tags.id.label('tag_id'))
+        .first())
+
+    tag_id = tag.tag_id
+
     # Check if tag is allready assigned to asset
 
     # Assign tag to Asset
     asset_tag = tbl_asset_tags()
     asset_tag.asset_id = assetID
-    asset_tag.tag_UID = tag_UID
+    asset_tag.tag_id = tag_id
     asset_tag.asset_tag_balance = 0.0
     db.session.add(asset_tag)
     db.session.commit()
 
     print("Done")
 
-def register_sensor(sensor_UID, assetID, sensor_type, sensor_description):
+def register_sensor(sensor_UID, assetID, sensor_type, sensor_name, sensor_owner):
 
-    # Assign sensor to Asset
-    asset_sensor = tbl_asset_sensors()
-    asset_sensor.asset_id = assetID
-    asset_sensor.sensor_UID = sensor_UID
-    asset_sensor.sensor_type = sensor_type
-    asset_sensor.description = sensor_description
-    db.session.add(asset_sensor)
+    # Create and assign sensor to asset
+    sensor = tbl_sensors()
+    sensor.sensor_UID = sensor_UID
+    sensor.name = sensor_name
+    sensor.sensor_type = sensor_type
+    sensor.owner = sensor_owner
+    sensor.parent_asset = assetID
+    db.session.add(sensor)
     db.session.commit()
 
-def add_transaction(sensorID, tag_UID, assetID, trans_type, value):
+def add_transaction(sensor_UID, tag_UID, trans_type, value):
+
+    # Get sensor and asset id from sensor_UID
+    sensor = (db.session.query(tbl_sensors)
+        .filter(tbl_sensors.sensor_UID == sensor_UID)
+        .add_columns(tbl_sensors.id.label('sensor_id'),
+        tbl_sensors.parent_asset.label('parent_asset_id'))
+        .first())
+    
+    sensor_id = sensor.sensor_id
+    asset_id = sensor.parent_asset_id
+
+    # Get tag_id based on tag_UID
+    tag = (db.session.query(tbl_tags)
+        .filter(tbl_tags.tag_UID == tag_UID)
+        .add_columns(tbl_tags.id.label('tag_id'))
+        .first())
+
+    tag_id = tag.tag_id
     
     # Add new transaction to the transactions table
     trans = tbl_transactions()
-    trans.tag_UID = tag_UID
-    trans.sensor_id = sensorID
-    trans.asset_id = assetID
+    trans.tag_id = tag_id
+    trans.sensor_id = sensor_id
+    trans.asset_id = asset_id
     trans.transaction_type_id = trans_type
     trans.transaction_value = value
 
@@ -128,10 +157,12 @@ Common asset types are: Parking Lot, Sports Venue etc.
 
 """)
 
-sensor_UID = 'THISISSENSORUID'
+sensor_UID = 'SENSUID'
 assetID = 1
 sensorID = 3
 sensor_type = 1
+tag_owner = 1
+sensor_owner = 1
 
 ans=True
 while ans:
@@ -145,23 +176,24 @@ while ans:
     ans=input("What would you like to do? ") 
     if ans=="1":
         sensor_UID = input("\n Specify Sensor UID:")
-        sensor_description = input("\n Specify Sensor Description:")
-        register_sensor(sensor_UID, assetID, sensor_type, sensor_description)
+        sensor_name = input("\n Specify Sensor Name:")
+        register_sensor(sensor_UID, assetID, sensor_type, sensor_name, sensor_owner)
     elif ans=="2":
         tag_UID = input("\n Specify Tag UID:")
-        tag_description = input("\n Specify Tag Description:")
-        if tag_description == "":
-            tag_description = "None"
-        register_tag(tag_UID, tag_description)
+        tag_name = input("\n Specify Tag Name:")
+        tag_type = input("\n Specify Tag Type")
+        if tag_name == "":
+            tag_name = "None"
+        register_tag(tag_UID, tag_name, tag_type, tag_owner)
     elif ans=="3":
         tag_UID = input("\n Specify Tag UID:")
         assign_tag(tag_UID, assetID)
     elif ans=="4":
-        #sensor_UID = input("\n Specify Sensor UID:")
+        sensor_UID = input("\n Specify Sensor UID:")
         tag_UID = input("\n Specify Tag UID:")
         trans_type = 1
         value = input("\n Specify Value:")
-        add_transaction(sensorID, tag_UID, assetID, trans_type, value)
+        add_transaction(sensor_UID, tag_UID, trans_type, value)
     elif ans=="5":
       exit()
     elif ans !="":

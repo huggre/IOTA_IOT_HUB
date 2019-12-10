@@ -19,9 +19,9 @@ class tbl_members(UserMixin, db.Model):
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
     assets = db.relationship('tbl_assets', backref='member', lazy='dynamic')
-    #tags = db.relationship('tbl_tags', backref='member', lazy='dynamic')
+    tags = db.relationship('tbl_tags', backref='member', lazy='dynamic')
     #accounts = db.relationship('tbl_accounts', backref='member', lazy='dynamic')
-    #sensors = db.relationship('tbl_sensors', backref='member', lazy='dynamic')
+    sensors = db.relationship('tbl_sensors', backref='member', lazy='dynamic')
 
     def __repr__(self):
         return '<Member {}>'.format(self.member_name)
@@ -42,28 +42,27 @@ class tbl_members(UserMixin, db.Model):
 #        return '<SensorType {}>'.format(self.name)
 
 # Define the Sensors table
-""" class tbl_sensors(db.Model):
-    #id = db.Column(db.Integer, primary_key=True)
-    sensor_UID = db.Column(db.String(64), primary_key=True)
-    sensor_type_id = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
-    #description = db.Column(db.String(64))
+class tbl_sensors(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sensor_UID = db.Column(db.String(64), index=True, unique=True)
+    #sensor_type_id = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
+    name = db.Column(db.String(64))
+    #modified = db.Column(db.DateTime, index=True, default=func.now())
+    sensor_type = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
+    parent_asset = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
+    owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
-    #modified = db.Column(db.DateTime, index=True, default=func.now())
-    #sensor_type = db.Column(db.Integer, db.ForeignKey('tbl_sensor_types.id'))
-    #parent_asset = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
-    #owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
     transactions = db.relationship('tbl_transactions', backref='trans_sensor_id', lazy='dynamic')
 
     def __repr__(self):
-        return '<Sensor {}>'.format(self.name) """
-
+        return '<Sensor {}>'.format(self.name)
 
 # Define the Sensor types table
 class tbl_sensor_types(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
-    #sensors = db.relationship('tbl_asset_sensors', backref='sensor_type', lazy='dynamic')
+    #sensors = db.relationship('tbl_sensors', backref='sensor_type', lazy='dynamic')
 
     def __repr__(self):
         return '<SensorType {}>'.format(self.name)
@@ -88,13 +87,14 @@ class tbl_assets(db.Model):
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
     price = db.Column(db.Float)
+    public = db.Column(db.Boolean, default=True)
     balance = db.Column(db.Float)
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
     asset_type = db.Column(db.Integer, db.ForeignKey('tbl_asset_types.id'))
     #account = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
     owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
-    #sensors = db.relationship('tbl_sensors', backref='sensor_asset', lazy='dynamic')
+    sensors = db.relationship('tbl_sensors', backref='sensor_asset', lazy='dynamic')
 
     def __repr__(self):
         return '<Asset {}>'.format(self.name)
@@ -103,7 +103,7 @@ class tbl_assets(db.Model):
 class tbl_asset_tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
-    tag_UID = db.Column(db.String(64), db.ForeignKey('tbl_tags.tag_UID'))
+    tag_id = db.Column(db.Integer, db.ForeignKey('tbl_tags.id'))
     #description = db.Column(db.String(64))
     asset_tag_balance = db.Column(db.Float)
     created = db.Column(db.DateTime, index=True, default=func.now())
@@ -115,14 +115,14 @@ class tbl_asset_tags(db.Model):
     def __repr__(self):
         return '<AssetTag {}>'.format(self.name)
 
-# Define the Asset Sensors table (many-to-many)
+""" # Define the Asset Sensors table (many-to-many)
 class tbl_asset_sensors(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
-    sensor_UID = db.Column(db.String(64))
-    sensor_type = db.Column(db.String(64), db.ForeignKey('tbl_sensor_types.id'))
+    sensor_id = db.Column(db.Integer, db.ForeignKey('tbl_sensors.id'))
+    #sensor_type = db.Column(db.String(64), db.ForeignKey('tbl_sensor_types.id'))
     #sensor_UID = db.Column(db.String(64), db.ForeignKey('tbl_sensors.sensor_UID'))
-    description = db.Column(db.String(64))
+    #description = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
 
@@ -133,29 +133,29 @@ class tbl_asset_sensors(db.Model):
 
     def __repr__(self):
         return '<AssetSensor {}>'.format(self.name)
-
+ """
 # Define the Tag types table
-#class tbl_tag_types(db.Model):
-#    id = db.Column(db.Integer, primary_key=True)
-#    name = db.Column(db.String(64), index=True, unique=True)
-#    tags = db.relationship('tbl_tags', backref='ttype', lazy='dynamic')
+class tbl_tag_types(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), index=True, unique=True)
+    tags = db.relationship('tbl_tags', backref='ttype', lazy='dynamic')
 
-#    def __repr__(self):
-#        return '<TagType {}>'.format(self.name)
+    def __repr__(self):
+        return '<TagType {}>'.format(self.name)
 
 # Define the Tags table
 class tbl_tags(db.Model):
-    #id = db.Column(db.Integer, primary_key=True)
-    #UID = db.Column(db.String(64), index=True, unique=True)
-    tag_UID = db.Column(db.String(64), primary_key=True)
-    description = db.Column(db.String(64))
+    id = db.Column(db.Integer, primary_key=True)
+    tag_UID = db.Column(db.String(64), index=True, unique=True)
+    #tag_UID = db.Column(db.String(64), primary_key=True)
+    #description = db.Column(db.String(64))
     #KEY = db.Column(db.String(64))
-    #name = db.Column(db.String(64))
+    name = db.Column(db.String(64))
     created = db.Column(db.DateTime, index=True, default=func.now())
     modified = db.Column(db.DateTime, index=True, default=func.now())
-    #tag_type = db.Column(db.Integer, db.ForeignKey('tbl_tag_types.id'))
+    tag_type = db.Column(db.Integer, db.ForeignKey('tbl_tag_types.id'))
     #account = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
-    #owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
+    owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
     transactions = db.relationship('tbl_transactions', backref='trans_tag_id', lazy='dynamic')
 
     def __repr__(self):
@@ -175,9 +175,9 @@ class tbl_transaction_types(db.Model):
 # Define the Transactions table
 class tbl_transactions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    tag_UID = db.Column(db.Integer, db.ForeignKey('tbl_tags.tag_UID'))
+    tag_id = db.Column(db.Integer, db.ForeignKey('tbl_tags.id'))
     #tag_account_id = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
-    sensor_id = db.Column(db.Integer, db.ForeignKey('tbl_asset_sensors.id'))
+    sensor_id = db.Column(db.Integer, db.ForeignKey('tbl_sensors.id'))
     asset_id = db.Column(db.Integer, db.ForeignKey('tbl_assets.id'))
     #asset_account_id = db.Column(db.Integer, db.ForeignKey('tbl_accounts.id'))
     transaction_type_id = db.Column(db.Integer, db.ForeignKey('tbl_transaction_types.id'))

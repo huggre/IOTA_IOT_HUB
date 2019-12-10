@@ -87,8 +87,9 @@
 					<thead>
 					<tr>
 						<th class="col-md-1">ID</th>
-						<th class="col-md-2">Tag Description</th>
-						<th class="col-md-2">Type</th>
+						<th class="col-md-2">Tag</th>
+						<th class="col-md-2">Sensor</th>
+						<th class="col-md-1">Type</th>
 						<th class="col-md-1">Value</th>
 						<th class="col-md-2">Timestamp</th>
 					</tr>
@@ -98,6 +99,7 @@
 					<tr>
 						<td>{{ transaction.transaction_id }}</td>
 						<td>{{ transaction.tag_description }}</td>
+						<td>{{ transaction.sensor_description }}</td>
 						<td>{{ transaction.transaction_type }}</td>
 						<td>{{ transaction.transaction_value }}</td>			
 						<td>{{ transaction.transaction_timestamp }}</td>
@@ -113,6 +115,7 @@
 				<table class="table table-striped" id="transactions">
 					<thead>
 					<tr>
+						<th class="col-md-1">ID</th>
 						<th class="col-md-2">Tag Description</th>
 						<th class="col-md-2">Tag Balance</th>
 					</tr>
@@ -120,6 +123,7 @@
 					<tbody>
 					{% for tag in tags %}
 					<tr>
+						<td>{{ tag.tag_id }}</td>
 						<td>{{ tag.tag_description }}</td>
 						<td>{{ tag.asset_tag_balance }}</td>
 					</tr>
@@ -134,17 +138,19 @@
 				<table class="table table-striped" id="transactions">
 					<thead>
 					<tr>
-						<th class="col-md-2">Sensor UID</th>
-						<th class="col-md-2">Sensor Type</th>
+						<th class="col-md-1">ID</th>
 						<th class="col-md-2">Sensor Description</th>
+						<th class="col-md-2">Sensor Type</th>
+						<th class="col-md-2">Sensor UID</th>
 					</tr>
 					</thead>
 					<tbody>
 					{% for sensor in sensors %}
 					<tr>
-						<td>{{ sensor.sensor_UID }}</td>
-						<td>{{ sensor.sensor_type }}</td>
+						<td>{{ sensor.sensor_id }}</td>
 						<td>{{ sensor.sensor_description }}</td>
+						<td>{{ sensor.sensor_type }}</td>
+						<td>{{ sensor.sensor_UID }}</td>
 					</tr>
 					{% endfor %}
 					</tbody>

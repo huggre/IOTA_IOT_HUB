@@ -15,7 +15,6 @@
 				<th class="col-md-1">ID</th>
 				<th class="col-md-2">Name</th>
 				<th class="col-md-2">Type</th>
-				<th class="col-md-2">Account</th>
 				<th class="col-md-2">UID</th>
 				<th class="col-md-1"></th>
 				</tr>
@@ -26,7 +25,6 @@
 				<td>{{ tag.tag_id }}</td>
 				<td><a href="/tag_details/{{ tag.tag_id }}">{{ tag.tag_name }}</a></td>
 				<td>{{ tag.tag_type }}</td>
-				<td><a href="/account_details/{{ tag.tag_account_id }}">{{ tag.tag_account_name }}</a></td>
 				<td>{{ tag.tag_UID }}</td>
 				<td align="right"><a href="/edit_tag/{{ tag.tag_id }}" class="btn btn-primary">Edit</a></td>
 				</tr>

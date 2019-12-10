@@ -1,7 +1,7 @@
 
 from sqlalchemy.sql import func
 from app import app
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, jsonify, abort, make_response
 
 # Imports the Flask Google-Maps library
 from flask_googlemaps import GoogleMaps
@@ -48,9 +48,9 @@ from app.models import tbl_assets
 from app.models import tbl_asset_types
 from app.models import tbl_tags
 from app.models import tbl_asset_tags
-from app.models import tbl_asset_sensors
-#from app.models import tbl_tag_types
-#from app.models import tbl_sensors
+#from app.models import tbl_asset_sensors
+from app.models import tbl_tag_types
+from app.models import tbl_sensors
 from app.models import tbl_sensor_types
 #from app.models import tbl_accounts
 from app.models import tbl_transactions
@@ -239,18 +239,17 @@ def new_withdrawal():
 
 ### TAGS ###
 
-""" # List my tags
+# List my tags
 @app.route('/tags')
 def tags():
-    tags = (db.session.query(tbl_tags, tbl_accounts, tbl_tag_types)
-        .join(tbl_accounts)
+    tags = (db.session.query(tbl_tags, tbl_tag_types)
         .join(tbl_tag_types)
         .filter(tbl_tags.owner == current_user.id)
         .add_columns(tbl_tags.id.label('tag_id'), 
-        tbl_tags.UID.label('tag_UID'), 
+        tbl_tags.tag_UID.label('tag_UID'), 
         tbl_tags.name.label('tag_name'), 
-        tbl_accounts.id.label('tag_account_id'), 
-        tbl_accounts.name.label('tag_account_name'), 
+        #tbl_accounts.id.label('tag_account_id'), 
+        #tbl_accounts.name.label('tag_account_name'), 
         tbl_tag_types.name.label('tag_type'))
         )
     return render_template("tags.html",tags = tags)
@@ -287,18 +286,18 @@ def tag_details(id):
 def save_tag(tag, form, new=False):
 
     # Check that the Sensor UID is unique and save to db
-    UID_tag = tbl_tags.query.filter_by(UID=form.tag_UID.data).first()
+    UID_tag = tbl_tags.query.filter_by(tag_UID=form.tag_UID.data).first()
 
     # In case user has not changed UID then its OK to save
-    if tag.UID == form.tag_UID.data:
+    if tag.tag_UID == form.tag_UID.data:
         UID_tag = None
 
     if UID_tag is None:
-        tag.UID = form.tag_UID.data
-        tag.KEY = form.tag_KEY.data
+        tag.tag_UID = form.tag_UID.data
+        #tag.KEY = form.tag_KEY.data
         tag.name = form.tag_name.data
         tag.tag_type = form.tag_type.data
-        tag.account = form.tag_account.data
+        #tag.account = form.tag_account.data
         if new:
             # Add the new asset to the database
             tag.owner = current_user.id
@@ -322,7 +321,7 @@ def new_tag():
     form.tag_type.choices = [(tagtype_row.id, tagtype_row.name) for tagtype_row in tbl_tag_types.query.all()]
 
     # Add user accounts to SelectField
-    form.tag_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
+    #form.tag_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
 
     if form.validate_on_submit():
         tag = tbl_tags()
@@ -348,7 +347,7 @@ def edit_tag(id):
             form.tag_type.choices = [(tagtype_row.id, tagtype_row.name) for tagtype_row in tbl_tag_types.query.all()]
 
             # Add user accounts to SelectField
-            form.tag_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
+            #form.tag_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
 
             if form.validate_on_submit():
                 retval = save_tag(tag, form)
@@ -357,18 +356,39 @@ def edit_tag(id):
                     return redirect(url_for('tags'))
             elif request.method == 'GET':
                 # Populate form fields here
-                form.tag_UID.data = tag.UID
-                form.tag_KEY.data = tag.KEY
+                form.tag_UID.data = tag.tag_UID
+                #form.tag_KEY.data = tag.KEY
                 form.tag_name.data = tag.name
                 form.tag_type.data = tag.tag_type
-                form.tag_account.data = tag.account
+                #form.tag_account.data = tag.account
             return render_template('tag.html', title='Edit tag', form=form)
         else:
             flash('You are not authorized to edit this tag!!')
             return render_template('authorization_error.html', title='Not authorized!!')
     else:
         return 'Error loading #{id}'.format(id=id)    
- """
+
+### PUBLIC ASSETS ###
+
+# List public assets
+@app.route('/public_assets')
+def public_assets():
+    assets = (db.session.query(tbl_assets, tbl_asset_types)
+        #.join(tbl_accounts)
+        .join(tbl_asset_types)
+        .filter(tbl_assets.public == True)
+        .add_columns(tbl_assets.id.label('asset_id'), 
+        tbl_assets.name.label('asset_name'), 
+        #tbl_assets.balance.label('asset_balance'), 
+        #tbl_accounts.id.label('asset_account_id'), 
+        #tbl_accounts.name.label('asset_account_name'), 
+        tbl_asset_types.name.label('asset_type'),
+        tbl_assets.city.label('asset_city'),
+        tbl_assets.country.label('asset_country'))
+        )
+    return render_template("public_assets.html",assets = assets)
+
+
 ### ASSETS ###
 
 # List my assets
@@ -432,14 +452,16 @@ def asset_details(id):
 
 
         # Get asset transactions
-        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_tags)
+        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_tags, tbl_sensors)
         .join(tbl_transaction_types)
         .join(tbl_tags)
+        .join(tbl_sensors)
         .filter(tbl_transactions.asset_id == id)
         .add_columns(tbl_transactions.id.label('transaction_id'), 
-        tbl_tags.description.label('tag_description'), 
+        tbl_tags.name.label('tag_description'), 
         tbl_transactions.timestamp.label('transaction_timestamp'), 
         tbl_transaction_types.name.label('transaction_type'), 
+        tbl_sensors.name.label('sensor_description'), 
         tbl_transactions.transaction_value.label('transaction_value'))
         )
 
@@ -448,16 +470,18 @@ def asset_details(id):
         .join(tbl_tags)
         .filter(tbl_asset_tags.asset_id == id)
         .add_columns(tbl_asset_tags.asset_tag_balance.label('asset_tag_balance'), 
-        tbl_tags.description.label('tag_description'))
+        tbl_tags.id.label('tag_id'), 
+        tbl_tags.name.label('tag_description'))
         )
 
         # Get asset sensors
-        sensors = (db.session.query(tbl_asset_sensors, tbl_sensor_types)
+        sensors = (db.session.query(tbl_sensors, tbl_sensor_types)
         .join(tbl_sensor_types)
-        .filter(tbl_asset_sensors.asset_id == id)
-        .add_columns(tbl_asset_sensors.sensor_UID.label('sensor_UID'), 
+        .filter(tbl_sensors.parent_asset == id)
+        .add_columns(tbl_sensors.id.label('sensor_id'), 
+        tbl_sensors.sensor_UID.label('sensor_UID'),
         tbl_sensor_types.name.label('sensor_type'),
-        tbl_asset_sensors.description.label('sensor_description'))
+        tbl_sensors.name.label('sensor_description'))
         )
 
 
@@ -477,6 +501,7 @@ def save_asset(asset, form, new=False):
     asset.latitude = form.asset_latitude.data
     asset.longitude = form.asset_longitude.data
     asset.price = form.asset_price.data
+    asset.public = form.asset_public.data
     asset.asset_type = form.asset_type.data
     #asset.account = form.asset_account.data
     if new:
@@ -540,6 +565,7 @@ def edit_asset(id):
                 form.asset_latitude.data = asset.latitude
                 form.asset_longitude.data = asset.longitude
                 form.asset_price.data = asset.price
+                form.asset_public.data = asset.public
                 form.asset_type.data = asset.asset_type
                 #form.asset_account.data = asset.account
 
@@ -554,7 +580,7 @@ def edit_asset(id):
 
 
 ### SENSORS ###
-""" 
+
 # List my sensors
 @app.route('/sensors')
 def sensors():
@@ -565,7 +591,7 @@ def sensors():
         .add_columns(tbl_sensors.id.label('sensor_id'), 
         tbl_sensors.name.label('sensor_name'), 
         tbl_sensor_types.name.label('sensor_type'), 
-        tbl_sensors.UID.label('sensor_UID'), 
+        tbl_sensors.sensor_UID.label('sensor_UID'), 
         tbl_assets.id.label('sensor_asset_id'), 
         tbl_assets.name.label('sensor_asset_name'))
         )
@@ -584,7 +610,7 @@ def sensor_details(id):
         tbl_sensors.created.label('sensor_created'), 
         tbl_sensors.modified.label('sensor_modified'), 
         tbl_sensors.name.label('sensor_name'), 
-        tbl_sensors.UID.label('sensor_UID'), 
+        tbl_sensors.sensor_UID.label('sensor_UID'), 
         tbl_sensor_types.name.label('sensor_type'), 
         tbl_assets.id.label('parent_asset_id'), 
         tbl_assets.name.label('parent_asset_name'), 
@@ -602,14 +628,14 @@ def sensor_details(id):
 def save_sensor(sensor, form, new=False):
 
     # Check that the Sensor UID is unique and save to db
-    UID_sensor = tbl_sensors.query.filter_by(UID=form.sensor_UID.data).first()
+    UID_sensor = tbl_sensors.query.filter_by(sensor_UID=form.sensor_UID.data).first()
 
     # In case user has not changed UID then its OK to save
-    if sensor.UID == form.sensor_UID.data:
+    if sensor.sensor_UID == form.sensor_UID.data:
         UID_sensor = None
 
     if UID_sensor is None:
-        sensor.UID = form.sensor_UID.data
+        sensor.sensor_UID = form.sensor_UID.data
         sensor.name = form.sensor_name.data
         sensor.sensor_type = form.sensor_type.data
         sensor.parent_asset = form.parent_asset.data
@@ -669,7 +695,7 @@ def edit_sensor(id):
                     return redirect(url_for('sensors'))
             elif request.method == 'GET':
                 # Populate form fields here
-                form.sensor_UID.data = sensor.UID
+                form.sensor_UID.data = sensor.sensor_UID
                 form.sensor_name.data = sensor.name
                 form.sensor_type.data = sensor.sensor_type
                 form.parent_asset.data = sensor.parent_asset
@@ -682,10 +708,10 @@ def edit_sensor(id):
     else:
         return 'Error loading #{id}'.format(id=id)
 
- """
+
 ### ACCOUNTS ###
 
-""" # List my accounts
+# List my accounts
 @app.route('/accounts')
 def accounts():
     accounts = (db.session.query(tbl_accounts)
@@ -696,6 +722,7 @@ def accounts():
     )
     return render_template("accounts.html",accounts = accounts)
 
+""" 
 # Show account details
 @app.route('/account_details/<int:id>')
 def account_details(id):
@@ -767,7 +794,9 @@ def edit_account(id):
             return render_template('authorization_error.html', title='Not authorized!!')
     else:
         return 'Error loading #{id}'.format(id=id)
+
  """
+
 ### TRANSACTIONS ###
 
 # List my transactions
@@ -831,21 +860,101 @@ def members():
     table.border = True
     return render_template("members.html",table = table)
 
-@app.route('/test')
-def test():
-    return render_template("test.html")
 
-@app.route('/asset_list')
-def asset_list():
 
-    form = AssetList()
+
+
+tasks = [
+    {
+        'id': 1,
+        'title': u'Buy groceries',
+        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol', 
+        'done': False
+    },
+    {
+        'id': 2,
+        'title': u'Learn Python',
+        'description': u'Need to find a good Python tutorial on the web', 
+        'done': False
+    }
+]
+
+
+@app.route('/iotago_api/v1.0/tasks', methods=['GET'])
+def get_tasks():
+    return jsonify({'tasks': tasks})
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+@app.errorhandler(400)
+def UID_missing(error):
+    return make_response(jsonify({'error': 'Tag UID missing in request'}), 400)
+
+@app.errorhandler(401)
+def tag_exist(error):
+    return make_response(jsonify({'error': 'Tag Already Exist'}), 401)
+
+@app.route('/iotago_api/v1.0/tasks/<int:task_id>', methods=['GET'])
+def get_task(task_id):
+    task = [task for task in tasks if task['id'] == task_id]
+    if len(task) == 0:
+        abort(404)
+    return jsonify({'task': task[0]})
+
+@app.route('/iotago_api/v1.0/tasks', methods=['POST'])
+def create_task():
+    if not request.json or not 'title' in request.json:
+        abort(400)
+    task = {
+        'id': tasks[-1]['id'] + 1,
+        'title': request.json['title'],
+        'description': request.json.get('description', ""),
+        'done': False
+    }
+    tasks.append(task)
+    return jsonify({'task': task}), 201
+
+# Get asset tag balance
+# curl -i http://localhost:5000/iotago_api/v1.0/asset_tag/1/T1
+@app.route('/iotago_api/v1.0/asset_tag/<int:asset_id>/<tagUID>', methods=['GET'])
+def get_tag_balance(asset_id, tagUID):
+    asset_tag = (db.session.query(tbl_asset_tags)
+        .filter(tbl_asset_tags.tag_UID == tagUID, tbl_asset_tags.asset_id == asset_id)
+        .add_columns(tbl_asset_tags.asset_tag_balance.label('asset_tag_balance'))
+        ).one()
+    if len(asset_tag) == 0:
+        abort(404)
+    return jsonify({'asset_tag_balance': asset_tag.asset_tag_balance})
+
+
+# Register new tag
+# curl -i -H "Content-Type: application/json" -X POST -d "{"""tagUID""":"""MY NEW TAG 1""","""description""":"""MY DESCRIPTION"""}" http://localhost:5000/iotago_api/v1.0/tags
+@app.route('/iotago_api/v1.0/tags', methods=['POST'])
+def register_tag():
+    if not request.json or not 'tagUID' in request.json:
+        abort(400)
+    tag = {
+        'tagUID': request.json['tagUID'],
+        'description': request.json.get('description', "")
+    }
+    # Check if tagUID already exist before writing to DB
+    new_tag = (db.session.query(tbl_tags)
+        .filter(tbl_tags.tag_UID == tag.get('tagUID'))
+        .first())
     
-    # Add asset types to SelectField
-    #form.asset_type.choices = [(asstype_row.id, asstype_row.name) for asstype_row in tbl_asset_types.query.all()]
-    form.asset_list.choices = [(asslist_row.id, asslist_row.name) for asslist_row in tbl_assets.query.all()]
+    # Set tag description to "None" if empty
+    tag_description = tag.get('description')
+    if not tag_description:
+        tag_description = 'None'
 
-    # Add user accounts to SelectField
-    #form.asset_account.choices = [(acc_row.id, acc_row.name) for acc_row in tbl_accounts.query.filter_by(owner=current_user.id)]
-    
-
-    return render_template("asset_list.html", title='Asset List', form=form)
+    if new_tag is None:
+        new_tag = tbl_tags()
+        new_tag.tag_UID = tag.get('tagUID')
+        new_tag.description = tag_description
+        db.session.add(new_tag)
+        db.session.commit()
+        return jsonify({'tag': tag}), 201
+    else:
+        abort(401)
