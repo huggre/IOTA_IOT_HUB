@@ -258,8 +258,7 @@ def tags():
 @app.route('/tag_details/<int:id>')
 def tag_details(id):
         
-    tag = (db.session.query(tbl_tags, tbl_accounts, tbl_tag_types)
-        .join(tbl_accounts, tbl_tags.account == tbl_accounts.id)
+    tag = (db.session.query(tbl_tags, tbl_tag_types)
         .join(tbl_tag_types, tbl_tags.tag_type == tbl_tag_types.id)
         .join(tbl_members, tbl_tags.owner == tbl_members.id)
         .filter(tbl_tags.id == id)
@@ -267,16 +266,37 @@ def tag_details(id):
         tbl_tags.created.label('tag_created'), 
         tbl_tags.modified.label('tag_modified'), 
         tbl_tags.name.label('tag_name'), 
-        tbl_tags.UID.label('tag_UID'), 
-        tbl_accounts.id.label('tag_account_id'), 
-        tbl_accounts.name.label('tag_account_name'), 
+        tbl_tags.tag_UID.label('tag_UID'), 
         tbl_tag_types.name.label('tag_type'), 
         tbl_members.id.label('tag_owner_id'),
         tbl_members.name.label('tag_owner_name'))
         ).one_or_none()
 
     if tag:
-        return render_template("tag_details.html",tag = tag)
+
+        # Get tag transactions
+        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_assets)
+        .join(tbl_transaction_types)
+        .join(tbl_assets) 
+        .filter(tbl_transactions.tag_id == id)
+        .add_columns(tbl_transactions.id.label('transaction_id'), 
+        tbl_assets.name.label('asset_description'), 
+        tbl_transactions.timestamp.label('transaction_timestamp'), 
+        tbl_transaction_types.name.label('transaction_type'), 
+        tbl_transactions.transaction_value.label('transaction_value'))
+        )
+
+        # Get tag assets
+        assets = (db.session.query(tbl_asset_tags, tbl_assets)
+        .join(tbl_assets)
+        .filter(tbl_asset_tags.tag_id == id)
+        .add_columns(tbl_asset_tags.asset_tag_balance.label('asset_tag_balance'), 
+        tbl_assets.id.label('asset_id'), 
+        tbl_assets.name.label('asset_description'))
+        )
+
+
+        return render_template("tag_details.html",tag = tag, transactions = transactions, assets = assets)
     else:
         flash('Tag ID: ' + str(id) + ' does not exist!!')
         return render_template('item_does_not_exist.html', title='Item does not exist!!')
@@ -619,7 +639,20 @@ def sensor_details(id):
         ).one_or_none()
 
     if sensor:
-        return render_template("sensor_details.html",sensor = sensor)
+
+        # Get sensor transactions
+        transactions = (db.session.query(tbl_transactions, tbl_transaction_types, tbl_tags)
+        .join(tbl_transaction_types)
+        .join(tbl_tags) 
+        .filter(tbl_transactions.sensor_id == id)
+        .add_columns(tbl_transactions.id.label('transaction_id'), 
+        tbl_tags.name.label('tag_description'), 
+        tbl_transactions.timestamp.label('transaction_timestamp'), 
+        tbl_transaction_types.name.label('transaction_type'), 
+        tbl_transactions.transaction_value.label('transaction_value'))
+        )
+
+        return render_template("sensor_details.html",sensor = sensor, transactions = transactions)
     else:
         flash('Sensor ID: ' + str(id) + ' does not exist!!')
         return render_template('item_does_not_exist.html', title='Item does not exist!!')

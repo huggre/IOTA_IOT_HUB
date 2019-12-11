@@ -5,51 +5,121 @@
 		<div class="col-md-10">
 		<table style="width:100%">
 			<tr>
-				<td><h1>Tag details</h1></td>
+				<td><h1>Tag data ( {{ tag.tag_name }} )</h1></td>
 			</tr>
 		</table>
-		<table class="table table-striped" id="asset_details">
-			<thead>
-			<tr>
-				<th class="col-md-2">Attribute</th>
-				<th class="col-md-8">Value</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td>ID</td>
-				<td>{{ tag.tag_id }}</td>
-			</tr>
-			<tr>
-				<td>Created</td>
-				<td>{{ tag.tag_created }}</td>
-			</tr>
-			<tr>
-				<td>Modified</td>
-				<td>{{ tag.tag_modified }}</td>
-			</tr>
-			<tr>
-				<td>Name</td>
-				<td>{{ tag.tag_name }}</td>
-			</tr>
-			<tr>
-				<td>Type</td>
-				<td>{{ tag.tag_type }}</td>
-			</tr>
-			<tr>
-				<td>UID</td>
-				<td>{{ tag.tag_UID }}</td>
-			</tr>
-			<tr>
-				<td>Owner</td>
-				<td><a href="/member_details/{{ tag.tag_owner_id }}">{{ tag.tag_owner_name }}</a></td>
-			</tr>
-			<tr>
-				<td>Account</td>
-				<td><a href="/account_details/{{ tag.tag_account_id }}">{{ tag.tag_account_name }}</a></td>
-			</tr>
-			</tbody>
-		</table>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#home">Tag details</a></li>
+			<li><a data-toggle="tab" href="#menu1">Tag transactions</a></li>
+			<li><a data-toggle="tab" href="#menu2">Tag assets</a></li>
+			<li><a data-toggle="tab" href="#menu3">???</a></li>
+		</ul>
+	
+	
+		<div class="tab-content">
+	
+			<div id="home" class="tab-pane fade in active">
+
+				<table class="table table-striped" id="asset_details">
+					<thead>
+					<tr>
+						<th class="col-md-2">Attribute</th>
+						<th class="col-md-8">Value</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td>ID</td>
+						<td>{{ tag.tag_id }}</td>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td>{{ tag.tag_created }}</td>
+					</tr>
+					<tr>
+						<td>Modified</td>
+						<td>{{ tag.tag_modified }}</td>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<td>{{ tag.tag_name }}</td>
+					</tr>
+					<tr>
+						<td>Type</td>
+						<td>{{ tag.tag_type }}</td>
+					</tr>
+					<tr>
+						<td>UID</td>
+						<td>{{ tag.tag_UID }}</td>
+					</tr>
+					<tr>
+						<td>Owner</td>
+						<td><a href="/member_details/{{ tag.tag_owner_id }}">{{ tag.tag_owner_name }}</a></td>
+					</tr>
+					</tbody>
+				</table>
+				
+			</div>
+	
+			<div id="menu1" class="tab-pane fade">
+
+				<table class="table table-striped" id="transactions">
+					<thead>
+					<tr>
+						<th class="col-md-1">ID</th>
+						<th class="col-md-2">Asset</th>
+						<th class="col-md-1">Type</th>
+						<th class="col-md-1">Value</th>
+						<th class="col-md-2">Timestamp</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for transaction in transactions %}
+					<tr>
+						<td>{{ transaction.transaction_id }}</td>
+						<td>{{ transaction.asset_description }}</td>
+						<td>{{ transaction.transaction_type }}</td>
+						<td>{{ transaction.transaction_value }}</td>			
+						<td>{{ transaction.transaction_timestamp }}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+		
+			</div>
+	
+			<div id="menu2" class="tab-pane fade">
+
+				<table class="table table-striped" id="transactions">
+					<thead>
+					<tr>
+						<th class="col-md-1">ID</th>
+						<th class="col-md-2">Asset</th>
+						<th class="col-md-2">Tag Balance</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for asset in assets %}
+					<tr>
+						<td>{{ asset.asset_id }}</td>
+						<td>{{ asset.asset_description }}</td>
+						<td>{{ asset.asset_tag_balance }}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+
+			</div>
+	
+			<div id="menu3" class="tab-pane fade">
+
+
+
+			</div>
 		</div>
+
+
+	</div>
 	</div>
 {% endblock %}

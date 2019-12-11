@@ -5,51 +5,108 @@
 		<div class="col-md-10">
 		<table style="width:100%">
 			<tr>
-				<td><h1>Sensor details</h1></td>
+				<td><h1>Sensor data ( {{ sensor.sensor_name }} )</h1></td>
 			</tr>
 		</table>
-		<table class="table table-striped" id="sensor_details">
-			<thead>
-			<tr>
-				<th class="col-md-2">Attribute</th>
-				<th class="col-md-8">Value</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr>
-				<td>ID</td>
-				<td>{{ sensor.sensor_id }}</td>
-			</tr>
-			<tr>
-				<td>Created</td>
-				<td>{{ sensor.sensor_created }}</td>
-			</tr>
-			<tr>
-				<td>Modified</td>
-				<td>{{ sensor.sensor_modified }}</td>
-			</tr>
-			<tr>
-				<td>Name</td>
-				<td>{{ sensor.sensor_name }}</td>
-			</tr>
-			<tr>
-				<td>Type</td>
-				<td>{{ sensor.sensor_type }}</td>
-			</tr>
-			<tr>
-				<td>UID</td>
-				<td>{{ sensor.sensor_UID }}</td>
-			</tr>
-			<tr>
-				<td>Parent asset</td>
-				<td><a href="/asset_details/{{ sensor.parent_asset_id }}">{{ sensor.parent_asset_name }}</a></td>
-				</tr>
-			<tr>
-				<td>Owner</td>
-				<td><a href="/member_details/{{ sensor.sensor_owner_id }}">{{ sensor.sensor_owner_name }}</a></td>
-			</tr>
-			</tbody>
-		</table>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#home">Sensor details</a></li>
+			<li><a data-toggle="tab" href="#menu1">Sensor transactions</a></li>
+			<li><a data-toggle="tab" href="#menu2">???</a></li>
+			<li><a data-toggle="tab" href="#menu3">???</a></li>
+		</ul>
+	
+	
+		<div class="tab-content">
+	
+			<div id="home" class="tab-pane fade in active">
+
+				<table class="table table-striped" id="sensor_details">
+					<thead>
+					<tr>
+						<th class="col-md-2">Attribute</th>
+						<th class="col-md-8">Value</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td>ID</td>
+						<td>{{ sensor.sensor_id }}</td>
+					</tr>
+					<tr>
+						<td>Created</td>
+						<td>{{ sensor.sensor_created }}</td>
+					</tr>
+					<tr>
+						<td>Modified</td>
+						<td>{{ sensor.sensor_modified }}</td>
+					</tr>
+					<tr>
+						<td>Name</td>
+						<td>{{ sensor.sensor_name }}</td>
+					</tr>
+					<tr>
+						<td>Type</td>
+						<td>{{ sensor.sensor_type }}</td>
+					</tr>
+					<tr>
+						<td>UID</td>
+						<td>{{ sensor.sensor_UID }}</td>
+					</tr>
+					<tr>
+						<td>Parent asset</td>
+						<td><a href="/asset_details/{{ sensor.parent_asset_id }}">{{ sensor.parent_asset_name }}</a></td>
+						</tr>
+					<tr>
+						<td>Owner</td>
+						<td><a href="/member_details/{{ sensor.sensor_owner_id }}">{{ sensor.sensor_owner_name }}</a></td>
+					</tr>
+					</tbody>
+				</table>
+
+			</div>
+	
+			<div id="menu1" class="tab-pane fade">
+
+				<table class="table table-striped" id="transactions">
+					<thead>
+					<tr>
+						<th class="col-md-1">ID</th>
+						<th class="col-md-2">Tag</th>
+						<th class="col-md-1">Type</th>
+						<th class="col-md-1">Value</th>
+						<th class="col-md-2">Timestamp</th>
+					</tr>
+					</thead>
+					<tbody>
+					{% for transaction in transactions %}
+					<tr>
+						<td>{{ transaction.transaction_id }}</td>
+						<td>{{ transaction.tag_description }}</td>
+						<td>{{ transaction.transaction_type }}</td>
+						<td>{{ transaction.transaction_value }}</td>			
+						<td>{{ transaction.transaction_timestamp }}</td>
+					</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+		
+			</div>
+	
+			<div id="menu2" class="tab-pane fade">
+
+
+			</div>
+	
+			<div id="menu3" class="tab-pane fade">
+
+
+
+			</div>
+		</div>
+
+
+
 		</div>
 	</div>
 {% endblock %}
