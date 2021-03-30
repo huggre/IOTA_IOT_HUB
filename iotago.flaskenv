@@ -1,1 +1,1 @@
-FLASK_APP=iotago.py
+FLASK_APP=iota_iot_hub.py
