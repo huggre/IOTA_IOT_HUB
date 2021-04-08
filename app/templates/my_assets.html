@@ -5,11 +5,11 @@
 		<div class="col-md-10">
 		<table style="width:100%">
 			<tr>
-				<td><h1>Devices</h1></td>
-				<td align="right"><a href="{{ url_for('new_device') }}" class="btn btn-primary">New device</a></td>
+				<td><h1>my Assets</h1></td>
+				<td align="right"><a href="{{ url_for('new_asset') }}" class="btn btn-primary">New asset</a></td>
 			</tr>
 		</table>
-		<table class="table table-striped" id="services">
+		<table class="table table-striped" id="assets">
 			<thead>
 			<tr>
 				<th class="col-md-1">ID</th>
@@ -22,19 +22,19 @@
 				</tr>
 			</thead>
 			<tbody>
-			{% for device in devices %}
+			{% for asset in assets %}
 			<tr>
-				<td>{{ device.device_id }}</td>
-                <td><a href="/device_details/{{ device.device_id }}">{{ device.device_name }}</a></td>
-                <td>{{ device.device_price }}</td>
-                <td>{{ device.device_payment_address }}</td>
-                <td>{{ device.device_remaining_time|make_datetime }}</td> <!-- Uses a custom filter to convert seconds to datetime -->
-                {% if device.device_remaining_time %}               
+				<td>{{ asset.id }}</td>
+                <td><a href="/asset_details/{{ asset.id }}">{{ asset.name }}</a></td>
+                <td>{{ asset.price }}</td>
+                <td>{{ asset.payment_address }}</td>
+                <td>{{ asset.remaining_time|make_datetime }}</td> <!-- Uses a custom filter to convert seconds to datetime -->
+                {% if asset.remaining_time %}               
                     <td><img src="{{url_for('static', filename='lightbulb.png')}}" align="middle" /></td>
                 {% else %}
                     <td><img src="{{url_for('static', filename='lightbulb_off.png')}}" align="middle" /></td>
                 {% endif %}
-				<td align="right"><a href="/edit_device/{{ device.device_id }}" class="btn btn-primary">Edit</a></td>
+				<td align="right"><a href="/edit_asset/{{ asset.id }}" class="btn btn-primary">Edit</a></td>
 				</tr>
 			{% endfor %}
 			</tbody>

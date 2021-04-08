@@ -1,0 +1,1 @@
+FLASK_APP=iotago_hub.py

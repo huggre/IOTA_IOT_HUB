@@ -5,7 +5,7 @@
 		<div class="col-md-10">
 		<table style="width:100%">
 			<tr>
-				<td><h1>Devices</h1></td>
+				<td><h1>my Devices</h1></td>
 				<td align="right"><a href="{{ url_for('new_device') }}" class="btn btn-primary">New device</a></td>
 			</tr>
 		</table>
@@ -14,10 +14,10 @@
 			<tr>
 				<th class="col-md-1">ID</th>
 				<th class="col-md-2">Name</th>
-				<th class="col-md-2">Price</th>
+				<th class="col-md-1">Price</th>
 				<th class="col-md-2">IOTA Address</th>
-                <th class="col-md-2">Remaining time</th>
-                <th class="col-md-2">Status</th>
+                <th class="col-md-1">Time left</th>
+                <th class="col-md-1">Status</th>
 				<th class="col-md-1"></th>
 				</tr>
 			</thead>
@@ -27,9 +27,13 @@
 				<td>{{ device.device_id }}</td>
                 <td><a href="/device_details/{{ device.device_id }}">{{ device.device_name }}</a></td>
                 <td>{{ device.device_price }}</td>
-                <td>{{ device.device_payment_address }}</td>                
-                <td>{{ device.device_remaining_time }}</td>                
-                <td>{{ device.device_status }}</td>
+                <td>{{ device.device_payment_address }}</td>
+                <td>{{ device.device_remaining_time|make_datetime }}</td> <!-- Uses a custom filter to convert seconds to datetime -->
+                {% if device.device_remaining_time %}               
+                    <td><img src="{{url_for('static', filename='lightbulb.png')}}" align="middle" /></td>
+                {% else %}
+                    <td><img src="{{url_for('static', filename='lightbulb_off.png')}}" align="middle" /></td>
+                {% endif %}
 				<td align="right"><a href="/edit_device/{{ device.device_id }}" class="btn btn-primary">Edit</a></td>
 				</tr>
 			{% endfor %}
@@ -37,4 +41,6 @@
 		</table>
 		</div>
 	</div>
+
 {% endblock %}
+

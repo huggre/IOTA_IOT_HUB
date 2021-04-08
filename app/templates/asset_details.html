@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-striped" id="device_details">
+                <thead>
+                    <tr>
+                        <th class="col-md-3">Attribute</th>
+                        <th class="col-md-3">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>{{ asset.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>{{ asset.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td>{{ asset.price }}</td>
+                    </tr>
+                    <tr>
+                        <td>IOTA Address</td>
+                        <td>{{ asset.payment_address }}</td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
+    </div>
+{% endblock %}

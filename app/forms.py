@@ -1,6 +1,6 @@
 # Imports IotaGo form dependencies
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField
+from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 
 # Imports the IotaGo members table
@@ -33,10 +33,22 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Please use a different email address.')
 
 # Form for new/edit Device
-class DeviceForm(FlaskForm):
-    device_name = StringField('Name', validators=[DataRequired()])
-    device_price = FloatField('Price (MIOTA pr. minute)', default='0.0', validators=[DataRequired()])
-    device_payment_address = StringField('IOTA Address', validators=[DataRequired()])
+class AssetForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    price = FloatField('Price (MIOTA pr. hour)', default='0.0', validators=[DataRequired()])
+    payment_address = StringField('IOTA Address', validators=[DataRequired()])
     #parent_asset = SelectField('Parent asset', coerce=int)
     #sensor_UID = StringField('UID', validators=[DataRequired()])
     submit = SubmitField('Submit')
+
+# Form for new/edit Device
+class AppForm(FlaskForm):
+    asset_id = IntegerField('AssetID', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+# Form for new Order
+class OrderForm(FlaskForm):
+    hours = StringField('Specify the amount of time you plan to use the asset [Days]:[Hours]:[Minutes]', default='00:00:00', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+

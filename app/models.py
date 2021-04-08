@@ -16,8 +16,9 @@ class tbl_members(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True)
     phone = db.Column(db.String(64), index=True)
     password_hash = db.Column(db.String(128))
-    created = db.Column(db.DateTime, index=True, default=func.now())
-    modified = db.Column(db.DateTime, index=True, default=func.now())
+    assets = db.relationship('tbl_assets', backref='member', lazy='dynamic')
+    created_on = db.Column(db.DateTime, index=True, default=func.now())
+    modified_on = db.Column(db.DateTime, index=True, default=func.now())
 
     def __repr__(self):
         return '<Member {}>'.format(self.member_name)
@@ -30,18 +31,17 @@ class tbl_members(UserMixin, db.Model):
 
 
 # Define Devices table
-class tbl_devices(db.Model):
+class tbl_assets(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))
     status = db.Column(db.Boolean, default=False)
     price = db.Column(db.Float)
-    remaining_time = db.Column(db.Integer)
+    remaining_time = db.Column(db.Integer, default=0)
     payment_address = db.Column(db.String(64))
     created_on = db.Column(db.DateTime, index=True, default=func.now())
-    created_by = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
     modified_on = db.Column(db.DateTime, index=True, default=func.now())
-    modified_by = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
+    owner = db.Column(db.Integer, db.ForeignKey('tbl_members.id'))
 
     def __repr__(self):
-        return '<Service {}>'.format(self.name)
+        return '<Asset {}>'.format(self.name)
 
