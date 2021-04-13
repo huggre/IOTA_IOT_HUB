@@ -1,7 +1,12 @@
+
 # Imports IotaGo form dependencies
 from flask_wtf import FlaskForm
-from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField
+from wtforms import StringField, FloatField, PasswordField, BooleanField, SubmitField, SelectField, IntegerField, DateTimeField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+#from wtforms.fields.html5 import DateField
+from wtforms.fields import DateField
+#from wtforms import DateTimeLocalField
+from wtforms.fields.html5 import DateTimeLocalField
 
 # Imports the IotaGo members table
 from app.models import tbl_members
@@ -48,7 +53,6 @@ class AppForm(FlaskForm):
 
 # Form for new Order
 class OrderForm(FlaskForm):
-    hours = StringField('Specify the amount of time you plan to use the asset [Days]:[Hours]:[Minutes]', default='00:00:00', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    addr = StringField()
 
 

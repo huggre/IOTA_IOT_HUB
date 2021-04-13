@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="row">
+        <div class="col-md-4">
+
+            <form>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="col-md-3">Days</th>
+                            <th class="col-md-3">Hours</th>
+                            <th class="col-md-3">Minutes</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td><input type="number" id="days" min="0" max="30" value="0"/></td>
+                            <td><input type="number" id="hours" min="0" max="23" value="0"/></td>
+                            <td><input type="number" id="minutes" min="0" max="59" value="0"/></td>
+                        </tr>
+                    </tbody>
+
+                </table>    
+
+                <table class="table">
+
+                    <tbody>                       
+
+                        <tr>
+                            <td><label for="favorite-animal">Total:</label></td>
+                            <td><input id="first-name" name="first-name" value="500.000000"></td>
+                            <td><label for="favorite-animal">MIOTA:</label></td>
+                            <td><button type="button">Click Me!</button></td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="favorite-animal">Addr:</label></td>
+                            <td colspan="2">{{ form.addr(class_='form-control') }}</td>
+                            <td><button type="button">Click Me!</button></td>
+                        </tr>
+
+                        <tr><td>{{ form.ccc(class_='form-control') }}</td></tr>
+
+                    </tbody>
+
+                </table>    
+
+            </form>
+
+            <div class="form-group required"><label class="control-label">{{ form.addr.label }}</label>
+                {{ form.addr(class_='form-control') }}</div>
+   
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script>
+    $('#minutes').change(function() {
+        window.alert("HEI");
+    });
+    </script>
+{% endblock %}

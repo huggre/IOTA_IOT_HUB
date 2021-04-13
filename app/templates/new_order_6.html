@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block app_content %}
+
+    <div class="col-md-6">
+
+        <table class="table table-borderless">
+
+            <thead>
+                <tr>
+                    <td colspan="3">Welcome to Iotago asset order....</td>
+                </tr>
+            </thead>
+
+            <tr>
+                <td><div class="form-group required">
+                    <label class="control-label">Days</label>
+                    <input class="form-control" type="number" id="days" onChange="price_calc();" min="0" max="30" value="0"/></div></td>
+                <td><div class="form-group required">
+                    <label class="control-label">Hours</label>
+                    <input class="form-control" type="number" id="hours" onChange="price_calc();" min="0" max="23" value="0"/></div></td>
+                <td><div class="form-group required">
+                    <label class="control-label">Minutes</label>
+                    <input class="form-control" type="number" id="minutes" onChange="price_calc();" min="0" max="59" value="0"/></div></td>
+            </tr>
+                <td colspan="3"><div class="form-group required">
+                    <label class="control-label">Total price (MIOTA)</label>
+                    <input class="form-control" id="price" value="0.000000"/>
+                    <button type="button" class="btn btn-primary" onclick="copy_to_clip('price')">Copy to clipboard</button></div></td>
+            <tr>
+                <td colspan="3" ><div class="form-group required">
+                    <label class="control-label">Address</label>
+                    {{ form.addr(class_='form-control') }}
+                    <!--<input class="form-control" id="addr" value="atoi1qphaau6v3taj0tzxcq9j9zr7k8nz4tt6hfck834mvjqkxxpm58v5crxceud"/>-->
+                    <button type="button" class="btn btn-primary" onclick="copy_to_clip('addr')">Copy to clipboard</button></div></td>
+            </tr>
+
+        </table>
+
+        <table class="table table-striped" id="device_details">
+            <thead>
+                <tr>
+                    <th class="col-md-3">Attribute</th>
+                    <th class="col-md-3">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>{{ asset.id }}</td>
+                </tr>
+                <tr>
+                    <td>Name</td>
+                    <td>{{ asset.name }}</td>
+                </tr>
+                <tr>
+                    <td>Price</td>
+                    <td>{{ asset.price }}</td>
+                </tr>
+                <tr>
+                    <td>IOTA Address</td>
+                    <td>{{ asset.payment_address }}</td>
+                </tr>
+            </tbody>
+        </table>    
+
+    </div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(category_filter=["success"]) %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-success" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% with messages = get_flashed_messages(category_filter=["error"]) %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+
+    </div>
+    
+
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+
+  <script>
+
+    function price_calc() {
+        var asset_price=2.0;
+        var days = parseInt(document.getElementById("days").value,10);
+        var hours = parseInt(document.getElementById("hours").value,10);
+        var minutes = parseInt(document.getElementById("minutes").value,10);
+        var total_hours = (days*24) + hours + (minutes/60)
+        var total_price = total_hours * asset_price
+        total_price = total_price.toFixed(6);
+        document.getElementById("price").setAttribute('value',total_price);
+    }
+
+    function copy_to_clip(field_id) {
+        /* Get the text field */
+        var copyText = document.getElementById(field_id);
+
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+
+        /* Alert the copied text */
+        alert("Copied the text: " + copyText.value);
+    }
+
+  </script>
+
+
+  <!--
+  <script>
+    $('#minutes').change(function() {
+        document.getElementById("total").setAttribute('value','My default value');
+    });
+    </script>
+    -->
+{% endblock %}
+
+
+<!--
+
+<input name="username" onChange="check_user(this.value);" type="text"/>
+
+document.getElementById("myText").value = "Johnny Bravo";
+
+# Calculat total price in MIOTA based on selected DD:HH:MM and display result in price label
+def price_calc():
+    total_hours = (int(sb_day.get()) * 24) + int(sb_hrs.get()) + (int(sb_min.get()) / 60)
+    total_price = total_hours * asset_price
+    total_price_rounded = round(total_price,6)
+    lbl_price_txt.configure(text="{:10.6f}".format(total_price_rounded))
+-->

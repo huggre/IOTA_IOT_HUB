@@ -96,27 +96,48 @@ def get_acc_addr():
     txt_receive_addr.delete(1.0,"end")
     txt_receive_addr.insert(1.0, addr)
 
+
+def get_asset_detail(key):
+    asset_details = json.loads(txt_asset_details.get("1.0",END))
+    return asset_details[key]
+
 def send_tokens():
 
-    # Always sync before doing anything with the account
-    print('Syncing...')
+    # Get reciever address
+    reciever_address = get_asset_detail('payment_address')
+
+    # Get price and convert IOTA
+    tokens_to_send = int(round((float(lbl_price_txt['text'])*1000000),6))
+
+    # Clear log
+    txt_purchase_log.delete(1.0,"end")
+
+    # Sync account
+    txt_purchase_log.insert(1.0, 'Syncing account...')
     synced = account.sync().execute()
 
-    print(f"Available balance {account.balance()['available']}")
+    try:
 
-    # TODO: Replace with the address of your choice!
-    transfer = iw.Transfer(
-        amount=10000000,
-        address='atoi1qphaau6v3taj0tzxcq9j9zr7k8nz4tt6hfck834mvjqkxxpm58v5crxceud',
-        remainder_value_strategy='ReuseAddress'
-    )
+        # Create transfer
+        transfer = iw.Transfer(
+            amount=tokens_to_send,
+            address=reciever_address,
+            remainder_value_strategy='ReuseAddress'
+        )
 
-    # Propogate the Transfer to Tangle
-    # and get a response from the Tangle
-    node_response = account.transfer(transfer)
-    print(
-        node_response
-    )
+
+        # Propogate the Transfer to Tangle
+        # and get a response from the Tangle
+        node_response = account.transfer(transfer)
+        #print(
+        #    node_response
+        #)
+        txt_purchase_log.insert(2.0, str(tokens_to_send) + ' IOTA was sendt to address: ' + reciever_address)
+
+    except ValueError as e:
+        txt_purchase_log.insert(2.0, str(e) + ' , aborting transaction')
+
+
 
 
 # Get asset details from server API
@@ -254,6 +275,10 @@ lbl_price_units.grid(row=5, column=2, sticky="N,E,S,W")
 
 btn_send = Button(frm_purchase, text="Send", command= lambda: send_tokens())
 btn_send.grid(row=6, column=0, columnspan=3, sticky="N,E,S,W")
+
+txt_purchase_log = Text(frm_purchase, height=7)
+txt_purchase_log.grid(row=7, column=0, columnspan=3, sticky="N,E,S,W")
+
 
 ### Define "Wallet" frame elements
 

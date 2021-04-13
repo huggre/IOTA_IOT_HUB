@@ -224,13 +224,21 @@ def new_order(id):
 
     form = OrderForm()
 
-    if form.validate_on_submit():
+    asset = (db.session.query(tbl_assets)
+        .filter(tbl_assets.id == id)
+        .add_columns(tbl_assets.id.label('id'), 
+        tbl_assets.name.label('name'), 
+        tbl_assets.price.label('price'), 
+        tbl_assets.payment_address.label('payment_address')) 
+        ).one_or_none()
 
-        #flash('Device updated successfully!')
-        return redirect(url_for('order_confirmation'))
+    form.addr.data = asset.payment_address
 
-
-    return render_template('new_order.html',title="New order", form=form)
+    if asset:
+        return render_template("new_order_6.html", title="New order", form=form, asset = asset)
+    else:
+        flash('Asset ID: ' + str(id) + ' does not exist!!')
+        #return render_template('item_does_not_exist.html', title='Item does not exist!!')
 
 
 
