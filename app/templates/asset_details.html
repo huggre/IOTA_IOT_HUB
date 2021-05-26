@@ -3,12 +3,13 @@
 {% block app_content %}
     <h1>{{ title }}</h1>
     <div class="row">
-        <div class="col-md-6">
-            <table class="table table-striped" id="device_details">
+        <div class="col-md-8">
+
+            <table class="table table-striped" id="asset_details">
                 <thead>
                     <tr>
-                        <th class="col-md-3">Attribute</th>
-                        <th class="col-md-3">Value</th>
+                        <th class="col-md-2">Attribute</th>
+                        <th class="col-md-6">Value</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,15 +22,48 @@
                         <td>{{ asset.name }}</td>
                     </tr>
                     <tr>
-                        <td>Price</td>
-                        <td>{{ asset.price }}</td>
+                        <td>Description</td>
+                        <td>{{ asset.description }}</td>
                     </tr>
                     <tr>
-                        <td>IOTA Address</td>
-                        <td>{{ asset.payment_address }}</td>
+                        <td>Price (MIOTA)</td>
+                        <td>{{ asset.price|make_miota }}</td>
+                    </tr>
+                    <tr>
+                        <td>Enabled</td>
+                        <td>{{ asset.enabled }}</td>
+                    </tr>
+                    <tr>
+                        <td>Asset Address</td>
+                        <td>{{ asset.asset_address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Settlement Address</td>
+                        <td>{{ asset.settlement_address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Endpoint</td>
+                        <td><a href="/endpoint_details/{{ asset.endpoint_id }}">{{ asset.endpoint_name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Service</td>
+                        <td>{{ asset.service_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Service Data</td>
+                        <td>{{ asset.service_data }}</td>
+                    </tr>
+                    <tr>
+                        <td>Created On</td>
+                        <td>{{ asset.created_on }}</td>
+                    </tr>
+                    <tr>
+                        <td>Modified On</td>
+                        <td>{{ asset.modified_on }}</td>
                     </tr>
                 </tbody>
-            </table>    
+            </table>            
+
         </div>
     </div>
 {% endblock %}

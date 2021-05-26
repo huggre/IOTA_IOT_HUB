@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="row">
+        <div class="col-md-8">
+
+            <table class="table table-striped" id="device_details">
+                <thead>
+
+                    <tr>
+                        <th class="col-md-2">Attribute</th>
+                        <th class="col-md-6">Value</th>
+                    </tr>
+                    
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>{{ endpoint.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>{{ endpoint.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>{{ endpoint.description }}</td>
+                    </tr>
+                    <tr>
+                        <td>URL</td>
+                        <td>{{ endpoint.endpoint }}</td>
+                    </tr>
+                    <tr>
+                        <td>Token</td>
+                        <td><div style = "word-break: break-all">{{ endpoint.token }}</div></td>
+                    </tr>
+                    <tr>
+                        <td>Enabled</td>
+                        <td>{{ endpoint.enabled }}</td>
+                    </tr>
+                    <tr>
+                        <td>Created On</td>
+                        <td>{{ endpoint.created_on }}</td>
+                    </tr>
+                    <tr>
+                        <td>Modified On</td>
+                        <td>{{ endpoint.modified_on }}</td>
+                    </tr>
+                </tbody>
+            </table>            
+
+        </div>
+    </div>
+{% endblock %}

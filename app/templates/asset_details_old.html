@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="row">
+        <div class="col-md-8">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Asset details</a></li>
+                <li><a data-toggle="tab" href="#menu1">Asset transactions</a></li>
+            </ul>
+
+
+            <div class="tab-content">
+
+                <div id="home" class="tab-pane fade in active">
+
+                    <table class="table table-striped" id="device_details">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">Attribute</th>
+                                <th class="col-md-5">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ID</td>
+                                <td>{{ asset.id }}</td>
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                                <td>{{ asset.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Description</td>
+                                <td>{{ asset.description }}</td>
+                            </tr>
+                            <tr>
+                                <td>Price (MIOTA)</td>
+                                <td>{{ asset.price|make_miota }}</td>
+                            </tr>
+                            <tr>
+                                <td>Enabled</td>
+                                <td>{{ asset.enabled }}</td>
+                            </tr>
+                            <tr>
+                                <td>Asset Address</td>
+                                <td>{{ asset.asset_address }}</td>
+                            </tr>
+                            <tr>
+                                <td>Settlement Address</td>
+                                <td>{{ asset.settlement_address }}</td>
+                            </tr>
+                            <tr>
+                                <td>Endpoint</td>
+                                <td><a href="/endpoint_details/{{ asset.endpoint_id }}">{{ asset.endpoint_name }}</a></td>
+                            </tr>
+                            <tr>
+                                <td>Service</td>
+                                <td>{{ asset.service_name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Service Data</td>
+                                <td>{{ asset.service_data }}</td>
+                            </tr>
+                            <tr>
+                                <td>Created On</td>
+                                <td>{{ asset.created_on }}</td>
+                            </tr>
+                            <tr>
+                                <td>Modified On</td>
+                                <td>{{ asset.modified_on }}</td>
+                            </tr>
+                        </tbody>
+                    </table>            
+
+                </div>
+
+                <div id="menu1" class="tab-pane fade">
+
+                    <table class="table table-striped" id="device_details">
+                        <thead>
+                            <tr>
+                                <th class="col-md-3">Attribute</th>
+                                <th class="col-md-3">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ID</td>
+                                <td>{{ asset.id }}</td>
+                            </tr>
+                            <tr>
+                                <td>Name</td>
+                                <td>{{ asset.name }}</td>
+                            </tr>
+                            <tr>
+                                <td>Price</td>
+                                <td>{{ asset.price }}</td>
+                            </tr>
+                            <tr>
+                                <td>IOTA Address</td>
+                                <td>{{ asset.payment_address }}</td>
+                            </tr>
+                        </tbody>
+                    </table>            
+
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+{% endblock %}

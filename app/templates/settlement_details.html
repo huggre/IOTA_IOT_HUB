@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-striped" id="transaction_details">
+                <thead>
+                    <tr>
+                        <th class="col-md-2">Attribute</th>
+                        <th class="col-md-6">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td>{{ settlement.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td>{{ settlement.address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Amount (MIOTA)</td>
+                        <td>{{ settlement.value|make_miota }}</td>
+                    </tr>
+                    <tr>
+                        <td>Completed</td>
+                        <td>{{ settlement.completed }}</td>
+                    </tr>
+                    <tr>
+                        <td>Completed On</td>
+                        <td>{{ settlement.completed_on }}</td>
+                    </tr>
+                    <tr>
+                        <td>IOTA Message ID</td>
+                        <td>{{ settlement.message_id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Created On</td>
+                        <td>{{ settlement.created_on }}</td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
+    </div>
+{% endblock %}

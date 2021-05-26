@@ -1,0 +1,104 @@
+2021/05/12-14:27:21.537732 4db0 RocksDB version: 6.17.3
+2021/05/12-14:27:21.537816 4db0 Git sha rocksdb_build_git_sha:@09c7e96eac1ab983f97ce9e0406730b8014b3398@
+2021/05/12-14:27:21.537834 4db0 Compile date 1
+2021/05/12-14:27:21.538090 4db0 DB SUMMARY
+2021/05/12-14:27:21.538107 4db0 DB Session ID:  IOGW080P6WNBETJOT9FY
+2021/05/12-14:27:21.548176 4db0 CURRENT file:  CURRENT
+2021/05/12-14:27:21.548194 4db0 IDENTITY file:  IDENTITY
+2021/05/12-14:27:21.548303 4db0 MANIFEST file:  MANIFEST-001260 size: 261 Bytes
+2021/05/12-14:27:21.548319 4db0 SST files in ./alice-database\db dir, Total Num: 1, files: 001217.sst 
+2021/05/12-14:27:21.548333 4db0 Write Ahead Log file in ./alice-database\db: 001261.log size: 0 ; 
+2021/05/12-14:27:21.548351 4db0                         Options.error_if_exists: 0
+2021/05/12-14:27:21.553861 4db0                       Options.create_if_missing: 1
+2021/05/12-14:27:21.553891 4db0                         Options.paranoid_checks: 1
+2021/05/12-14:27:21.553896 4db0                               Options.track_and_verify_wals_in_manifest: 0
+2021/05/12-14:27:21.553916 4db0                                     Options.env: 000001C6B2BDBCD0
+2021/05/12-14:27:21.553934 4db0                                      Options.fs: WinFS
+2021/05/12-14:27:21.553940 4db0                                Options.info_log: 000001C6B5632E10
+2021/05/12-14:27:21.553946 4db0                Options.max_file_opening_threads: 16
+2021/05/12-14:27:21.553951 4db0                              Options.statistics: 0000000000000000
+2021/05/12-14:27:21.553956 4db0                               Options.use_fsync: 0
+2021/05/12-14:27:21.553961 4db0                       Options.max_log_file_size: 0
+2021/05/12-14:27:21.553966 4db0                  Options.max_manifest_file_size: 1073741824
+2021/05/12-14:27:21.553972 4db0                   Options.log_file_time_to_roll: 0
+2021/05/12-14:27:21.553991 4db0                       Options.keep_log_file_num: 1000
+2021/05/12-14:27:21.553996 4db0                    Options.recycle_log_file_num: 0
+2021/05/12-14:27:21.554000 4db0                         Options.allow_fallocate: 1
+2021/05/12-14:27:21.554005 4db0                        Options.allow_mmap_reads: 0
+2021/05/12-14:27:21.554009 4db0                       Options.allow_mmap_writes: 0
+2021/05/12-14:27:21.554014 4db0                        Options.use_direct_reads: 0
+2021/05/12-14:27:21.554019 4db0                        Options.use_direct_io_for_flush_and_compaction: 0
+2021/05/12-14:27:21.554023 4db0          Options.create_missing_column_families: 1
+2021/05/12-14:27:21.554028 4db0                              Options.db_log_dir: 
+2021/05/12-14:27:21.554033 4db0                                 Options.wal_dir: ./alice-database\db
+2021/05/12-14:27:21.554037 4db0                Options.table_cache_numshardbits: 6
+2021/05/12-14:27:21.554054 4db0                         Options.WAL_ttl_seconds: 0
+2021/05/12-14:27:21.554059 4db0                       Options.WAL_size_limit_MB: 0
+2021/05/12-14:27:21.554063 4db0                        Options.max_write_batch_group_size_bytes: 1048576
+2021/05/12-14:27:21.554068 4db0             Options.manifest_preallocation_size: 4194304
+2021/05/12-14:27:21.554072 4db0                     Options.is_fd_close_on_exec: 1
+2021/05/12-14:27:21.554077 4db0                   Options.advise_random_on_open: 1
+2021/05/12-14:27:21.554081 4db0                    Options.db_write_buffer_size: 0
+2021/05/12-14:27:21.554086 4db0                    Options.write_buffer_manager: 000001C6B67B49D0
+2021/05/12-14:27:21.554091 4db0         Options.access_hint_on_compaction_start: 1
+2021/05/12-14:27:21.554095 4db0  Options.new_table_reader_for_compaction_inputs: 0
+2021/05/12-14:27:21.554100 4db0           Options.random_access_max_buffer_size: 1048576
+2021/05/12-14:27:21.554104 4db0                      Options.use_adaptive_mutex: 0
+2021/05/12-14:27:21.554108 4db0                            Options.rate_limiter: 0000000000000000
+2021/05/12-14:27:21.554113 4db0     Options.sst_file_manager.rate_bytes_per_sec: 0
+2021/05/12-14:27:21.554118 4db0                       Options.wal_recovery_mode: 2
+2021/05/12-14:27:21.554157 4db0                  Options.enable_thread_tracking: 0
+2021/05/12-14:27:21.554181 4db0                  Options.enable_pipelined_write: 0
+2021/05/12-14:27:21.554186 4db0                  Options.unordered_write: 0
+2021/05/12-14:27:21.554204 4db0         Options.allow_concurrent_memtable_write: 1
+2021/05/12-14:27:21.554209 4db0      Options.enable_write_thread_adaptive_yield: 1
+2021/05/12-14:27:21.554229 4db0             Options.write_thread_max_yield_usec: 100
+2021/05/12-14:27:21.554234 4db0            Options.write_thread_slow_yield_usec: 3
+2021/05/12-14:27:21.554252 4db0                               Options.row_cache: None
+2021/05/12-14:27:21.554257 4db0                              Options.wal_filter: None
+2021/05/12-14:27:21.554263 4db0             Options.avoid_flush_during_recovery: 0
+2021/05/12-14:27:21.554268 4db0             Options.allow_ingest_behind: 0
+2021/05/12-14:27:21.554273 4db0             Options.preserve_deletes: 0
+2021/05/12-14:27:21.554279 4db0             Options.two_write_queues: 0
+2021/05/12-14:27:21.554283 4db0             Options.manual_wal_flush: 0
+2021/05/12-14:27:21.554288 4db0             Options.atomic_flush: 0
+2021/05/12-14:27:21.554292 4db0             Options.avoid_unnecessary_blocking_io: 0
+2021/05/12-14:27:21.554296 4db0                 Options.persist_stats_to_disk: 0
+2021/05/12-14:27:21.554301 4db0                 Options.write_dbid_to_manifest: 0
+2021/05/12-14:27:21.554305 4db0                 Options.log_readahead_size: 0
+2021/05/12-14:27:21.554310 4db0                 Options.file_checksum_gen_factory: Unknown
+2021/05/12-14:27:21.554315 4db0                 Options.best_efforts_recovery: 0
+2021/05/12-14:27:21.554332 4db0                Options.max_bgerror_resume_count: 2147483647
+2021/05/12-14:27:21.554336 4db0            Options.bgerror_resume_retry_interval: 1000000
+2021/05/12-14:27:21.554341 4db0             Options.allow_data_in_errors: 0
+2021/05/12-14:27:21.554345 4db0             Options.db_host_id: __hostname__
+2021/05/12-14:27:21.554350 4db0             Options.max_background_jobs: 2
+2021/05/12-14:27:21.554354 4db0             Options.max_background_compactions: -1
+2021/05/12-14:27:21.554359 4db0             Options.max_subcompactions: 1
+2021/05/12-14:27:21.554363 4db0             Options.avoid_flush_during_shutdown: 0
+2021/05/12-14:27:21.554367 4db0           Options.writable_file_max_buffer_size: 1048576
+2021/05/12-14:27:21.554372 4db0             Options.delayed_write_rate : 16777216
+2021/05/12-14:27:21.554376 4db0             Options.max_total_wal_size: 0
+2021/05/12-14:27:21.554381 4db0             Options.delete_obsolete_files_period_micros: 21600000000
+2021/05/12-14:27:21.554385 4db0                   Options.stats_dump_period_sec: 600
+2021/05/12-14:27:21.554390 4db0                 Options.stats_persist_period_sec: 600
+2021/05/12-14:27:21.554394 4db0                 Options.stats_history_buffer_size: 1048576
+2021/05/12-14:27:21.554398 4db0                          Options.max_open_files: -1
+2021/05/12-14:27:21.554403 4db0                          Options.bytes_per_sync: 0
+2021/05/12-14:27:21.554407 4db0                      Options.wal_bytes_per_sync: 0
+2021/05/12-14:27:21.554411 4db0                   Options.strict_bytes_per_sync: 0
+2021/05/12-14:27:21.554416 4db0       Options.compaction_readahead_size: 0
+2021/05/12-14:27:21.554420 4db0                  Options.max_background_flushes: -1
+2021/05/12-14:27:21.554440 4db0 Compression algorithms supported:
+2021/05/12-14:27:21.554445 4db0 	kZSTD supported: 0
+2021/05/12-14:27:21.554450 4db0 	kSnappyCompression supported: 0
+2021/05/12-14:27:21.554455 4db0 	kBZip2Compression supported: 0
+2021/05/12-14:27:21.554459 4db0 	kZlibCompression supported: 0
+2021/05/12-14:27:21.554479 4db0 	kLZ4Compression supported: 1
+2021/05/12-14:27:21.554497 4db0 	kXpressCompression supported: 0
+2021/05/12-14:27:21.554502 4db0 	kLZ4HCCompression supported: 1
+2021/05/12-14:27:21.554521 4db0 	kZSTDNotFinalCompression supported: 0
+2021/05/12-14:27:21.554551 4db0 Fast CRC32 supported: Supported on x86
+2021/05/12-14:27:21.555751 4db0 [WARN] [db/db_impl/db_impl_open.cc:1792] Persisting Option File error: OK
+2021/05/12-14:27:21.555771 4db0 [db/db_impl/db_impl.cc:460] Shutdown: canceling all background work
+2021/05/12-14:27:21.555850 4db0 [db/db_impl/db_impl.cc:638] Shutdown complete

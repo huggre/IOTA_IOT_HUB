@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-8">
+		<table style="width:100%">
+			<tr>
+				<td><h1>my Transactions</h1></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="assets">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-3">Asset Name</th>
+				<th class="col-md-1">Status</th>
+				<th class="col-md-1">Created On</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for transaction in transactions %}
+			<tr>
+				<td><a href="/transaction_details/{{ transaction.id }}">{{ transaction.id }}</a></td>
+                <td><a href="/asset_details/{{ transaction.asset_id }}">{{ transaction.asset_name }}</a></td>
+                <td>{{ transaction.status }}</td>
+                <td>{{ transaction.created_on }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+
+{% endblock %}
+

@@ -2,7 +2,7 @@
 
 {% block app_content %}
 	<div class="row">
-		<div class="col-md-10">
+		<div class="col-md-8">
 		<table style="width:100%">
 			<tr>
 				<td><h1>my Assets</h1></td>
@@ -13,11 +13,9 @@
 			<thead>
 			<tr>
 				<th class="col-md-1">ID</th>
-				<th class="col-md-2">Name</th>
-				<th class="col-md-1">Price</th>
-				<th class="col-md-2">IOTA Address</th>
-                <th class="col-md-1">Time left</th>
-                <th class="col-md-1">Status</th>
+				<th class="col-md-3">Name</th>
+				<th class="col-md-1">Price (MIOTA)</th>
+                <th class="col-md-1">Enabled</th>
 				<th class="col-md-1"></th>
 				</tr>
 			</thead>
@@ -26,14 +24,8 @@
 			<tr>
 				<td>{{ asset.id }}</td>
                 <td><a href="/asset_details/{{ asset.id }}">{{ asset.name }}</a></td>
-                <td>{{ asset.price }}</td>
-                <td>{{ asset.payment_address }}</td>
-                <td>{{ asset.remaining_time|make_datetime }}</td> <!-- Uses a custom filter to convert seconds to datetime -->
-                {% if asset.remaining_time %}               
-                    <td><img src="{{url_for('static', filename='lightbulb.png')}}" align="middle" /></td>
-                {% else %}
-                    <td><img src="{{url_for('static', filename='lightbulb_off.png')}}" align="middle" /></td>
-                {% endif %}
+                <td>{{ asset.price|make_miota }}</td>
+                <td>{{ asset.enabled }}</td>
 				<td align="right"><a href="/edit_asset/{{ asset.id }}" class="btn btn-primary">Edit</a></td>
 				</tr>
 			{% endfor %}

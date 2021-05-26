@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+    <h1>{{ title }}</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-striped" id="transaction_details">
+                <thead>
+                    <tr>
+                        <th class="col-md-2">Attribute</th>
+                        <th class="col-md-6">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Transaction ID</td>
+                        <td>{{ transaction.id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Asset Name</td>
+                        <td><a href="/asset_details/{{ transaction.asset_id }}">{{ transaction.asset_name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Transaction Price (MIOTA)</td>
+                        <td>{{ transaction.transaction_price|make_miota }}</td>
+                    </tr>
+                    <tr>
+                        <td>Recieved Amount (MIOTA)</td>
+                        <td>{{ transaction.recieved_amount|make_miota }}</td>
+                    </tr>
+                    <tr>
+                        <td>Asset Address</td>
+                        <td>{{ transaction.asset_address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Settlement Address</td>
+                        <td>{{ transaction.settlement_address }}</td>
+                    </tr>
+                    <tr>
+                        <td>Endpoint</td>
+                        <td><a href="/endpoint_details/{{ transaction.endpoint_id }}">{{ transaction.endpoint_name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td>Service</td>
+                        <td>{{ transaction.service_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Service Data</td>
+                        <td>{{ transaction.service_data }}</td>
+                    </tr>
+                    <tr>
+                        <td>Transaction Status</td>
+                        <td>{{ transaction.status }}</td>
+                    </tr>
+                    <tr>
+                        <td>IOTA Message ID</td>
+                        <td>{{ transaction.message_id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Created On</td>
+                        <td>{{ transaction.created_on }}</td>
+                    </tr>
+                    <tr>
+                        <td>Settlement ID</td>
+                        <td><a href="/settlement_details/{{ transaction.settlement_id }}">{{ transaction.settlement_id }}</a></td>
+                    </tr>
+                </tbody>
+            </table>    
+        </div>
+    </div>
+{% endblock %}

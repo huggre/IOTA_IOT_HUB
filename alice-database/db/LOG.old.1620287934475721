@@ -1,0 +1,104 @@
+2021/05/05-16:14:46.597625 c004 RocksDB version: 6.17.3
+2021/05/05-16:14:46.597723 c004 Git sha rocksdb_build_git_sha:@09c7e96eac1ab983f97ce9e0406730b8014b3398@
+2021/05/05-16:14:46.597769 c004 Compile date 1
+2021/05/05-16:14:46.598050 c004 DB SUMMARY
+2021/05/05-16:14:46.598067 c004 DB Session ID:  VJH0D5N8J7B9JSC57P0K
+2021/05/05-16:14:46.601296 c004 CURRENT file:  CURRENT
+2021/05/05-16:14:46.601313 c004 IDENTITY file:  IDENTITY
+2021/05/05-16:14:46.601552 c004 MANIFEST file:  MANIFEST-000370 size: 457 Bytes
+2021/05/05-16:14:46.601583 c004 SST files in ./alice-database\db dir, Total Num: 2, files: 000366.sst 000369.sst 
+2021/05/05-16:14:46.601599 c004 Write Ahead Log file in ./alice-database\db: 000371.log size: 100803 ; 
+2021/05/05-16:14:46.601613 c004                         Options.error_if_exists: 0
+2021/05/05-16:14:46.602207 c004                       Options.create_if_missing: 1
+2021/05/05-16:14:46.602230 c004                         Options.paranoid_checks: 1
+2021/05/05-16:14:46.602250 c004                               Options.track_and_verify_wals_in_manifest: 0
+2021/05/05-16:14:46.602255 c004                                     Options.env: 00000209C5855000
+2021/05/05-16:14:46.602273 c004                                      Options.fs: WinFS
+2021/05/05-16:14:46.602291 c004                                Options.info_log: 00000209C5297870
+2021/05/05-16:14:46.602296 c004                Options.max_file_opening_threads: 16
+2021/05/05-16:14:46.602301 c004                              Options.statistics: 0000000000000000
+2021/05/05-16:14:46.602306 c004                               Options.use_fsync: 0
+2021/05/05-16:14:46.602311 c004                       Options.max_log_file_size: 0
+2021/05/05-16:14:46.602315 c004                  Options.max_manifest_file_size: 1073741824
+2021/05/05-16:14:46.602320 c004                   Options.log_file_time_to_roll: 0
+2021/05/05-16:14:46.602325 c004                       Options.keep_log_file_num: 1000
+2021/05/05-16:14:46.602342 c004                    Options.recycle_log_file_num: 0
+2021/05/05-16:14:46.602347 c004                         Options.allow_fallocate: 1
+2021/05/05-16:14:46.602351 c004                        Options.allow_mmap_reads: 0
+2021/05/05-16:14:46.602356 c004                       Options.allow_mmap_writes: 0
+2021/05/05-16:14:46.602360 c004                        Options.use_direct_reads: 0
+2021/05/05-16:14:46.602365 c004                        Options.use_direct_io_for_flush_and_compaction: 0
+2021/05/05-16:14:46.602369 c004          Options.create_missing_column_families: 1
+2021/05/05-16:14:46.602374 c004                              Options.db_log_dir: 
+2021/05/05-16:14:46.602378 c004                                 Options.wal_dir: ./alice-database\db
+2021/05/05-16:14:46.602383 c004                Options.table_cache_numshardbits: 6
+2021/05/05-16:14:46.602387 c004                         Options.WAL_ttl_seconds: 0
+2021/05/05-16:14:46.602392 c004                       Options.WAL_size_limit_MB: 0
+2021/05/05-16:14:46.602397 c004                        Options.max_write_batch_group_size_bytes: 1048576
+2021/05/05-16:14:46.602401 c004             Options.manifest_preallocation_size: 4194304
+2021/05/05-16:14:46.602406 c004                     Options.is_fd_close_on_exec: 1
+2021/05/05-16:14:46.602410 c004                   Options.advise_random_on_open: 1
+2021/05/05-16:14:46.602415 c004                    Options.db_write_buffer_size: 0
+2021/05/05-16:14:46.602419 c004                    Options.write_buffer_manager: 00000209C378AB90
+2021/05/05-16:14:46.602424 c004         Options.access_hint_on_compaction_start: 1
+2021/05/05-16:14:46.602429 c004  Options.new_table_reader_for_compaction_inputs: 0
+2021/05/05-16:14:46.602433 c004           Options.random_access_max_buffer_size: 1048576
+2021/05/05-16:14:46.602438 c004                      Options.use_adaptive_mutex: 0
+2021/05/05-16:14:46.602442 c004                            Options.rate_limiter: 0000000000000000
+2021/05/05-16:14:46.602447 c004     Options.sst_file_manager.rate_bytes_per_sec: 0
+2021/05/05-16:14:46.602452 c004                       Options.wal_recovery_mode: 2
+2021/05/05-16:14:46.602475 c004                  Options.enable_thread_tracking: 0
+2021/05/05-16:14:46.602482 c004                  Options.enable_pipelined_write: 0
+2021/05/05-16:14:46.602488 c004                  Options.unordered_write: 0
+2021/05/05-16:14:46.602508 c004         Options.allow_concurrent_memtable_write: 1
+2021/05/05-16:14:46.602512 c004      Options.enable_write_thread_adaptive_yield: 1
+2021/05/05-16:14:46.602517 c004             Options.write_thread_max_yield_usec: 100
+2021/05/05-16:14:46.602535 c004            Options.write_thread_slow_yield_usec: 3
+2021/05/05-16:14:46.602540 c004                               Options.row_cache: None
+2021/05/05-16:14:46.602545 c004                              Options.wal_filter: None
+2021/05/05-16:14:46.602550 c004             Options.avoid_flush_during_recovery: 0
+2021/05/05-16:14:46.602554 c004             Options.allow_ingest_behind: 0
+2021/05/05-16:14:46.602559 c004             Options.preserve_deletes: 0
+2021/05/05-16:14:46.602564 c004             Options.two_write_queues: 0
+2021/05/05-16:14:46.602569 c004             Options.manual_wal_flush: 0
+2021/05/05-16:14:46.602573 c004             Options.atomic_flush: 0
+2021/05/05-16:14:46.602578 c004             Options.avoid_unnecessary_blocking_io: 0
+2021/05/05-16:14:46.602582 c004                 Options.persist_stats_to_disk: 0
+2021/05/05-16:14:46.602587 c004                 Options.write_dbid_to_manifest: 0
+2021/05/05-16:14:46.602605 c004                 Options.log_readahead_size: 0
+2021/05/05-16:14:46.602610 c004                 Options.file_checksum_gen_factory: Unknown
+2021/05/05-16:14:46.602614 c004                 Options.best_efforts_recovery: 0
+2021/05/05-16:14:46.602619 c004                Options.max_bgerror_resume_count: 2147483647
+2021/05/05-16:14:46.602623 c004            Options.bgerror_resume_retry_interval: 1000000
+2021/05/05-16:14:46.602628 c004             Options.allow_data_in_errors: 0
+2021/05/05-16:14:46.602632 c004             Options.db_host_id: __hostname__
+2021/05/05-16:14:46.602637 c004             Options.max_background_jobs: 2
+2021/05/05-16:14:46.602641 c004             Options.max_background_compactions: -1
+2021/05/05-16:14:46.602646 c004             Options.max_subcompactions: 1
+2021/05/05-16:14:46.602650 c004             Options.avoid_flush_during_shutdown: 0
+2021/05/05-16:14:46.602655 c004           Options.writable_file_max_buffer_size: 1048576
+2021/05/05-16:14:46.602659 c004             Options.delayed_write_rate : 16777216
+2021/05/05-16:14:46.602664 c004             Options.max_total_wal_size: 0
+2021/05/05-16:14:46.602669 c004             Options.delete_obsolete_files_period_micros: 21600000000
+2021/05/05-16:14:46.602673 c004                   Options.stats_dump_period_sec: 600
+2021/05/05-16:14:46.602678 c004                 Options.stats_persist_period_sec: 600
+2021/05/05-16:14:46.602682 c004                 Options.stats_history_buffer_size: 1048576
+2021/05/05-16:14:46.602687 c004                          Options.max_open_files: -1
+2021/05/05-16:14:46.602692 c004                          Options.bytes_per_sync: 0
+2021/05/05-16:14:46.602696 c004                      Options.wal_bytes_per_sync: 0
+2021/05/05-16:14:46.602700 c004                   Options.strict_bytes_per_sync: 0
+2021/05/05-16:14:46.602705 c004       Options.compaction_readahead_size: 0
+2021/05/05-16:14:46.602709 c004                  Options.max_background_flushes: -1
+2021/05/05-16:14:46.602714 c004 Compression algorithms supported:
+2021/05/05-16:14:46.602719 c004 	kZSTD supported: 0
+2021/05/05-16:14:46.602723 c004 	kSnappyCompression supported: 0
+2021/05/05-16:14:46.602728 c004 	kBZip2Compression supported: 0
+2021/05/05-16:14:46.602733 c004 	kZlibCompression supported: 0
+2021/05/05-16:14:46.602738 c004 	kLZ4Compression supported: 1
+2021/05/05-16:14:46.602742 c004 	kXpressCompression supported: 0
+2021/05/05-16:14:46.602746 c004 	kLZ4HCCompression supported: 1
+2021/05/05-16:14:46.602751 c004 	kZSTDNotFinalCompression supported: 0
+2021/05/05-16:14:46.602760 c004 Fast CRC32 supported: Supported on x86
+2021/05/05-16:14:46.603487 c004 [WARN] [db/db_impl/db_impl_open.cc:1792] Persisting Option File error: OK
+2021/05/05-16:14:46.603499 c004 [db/db_impl/db_impl.cc:460] Shutdown: canceling all background work
+2021/05/05-16:14:46.603534 c004 [db/db_impl/db_impl.cc:638] Shutdown complete

@@ -1,0 +1,104 @@
+2021/05/05-15:56:09.724519 aed4 RocksDB version: 6.17.3
+2021/05/05-15:56:09.724628 aed4 Git sha rocksdb_build_git_sha:@09c7e96eac1ab983f97ce9e0406730b8014b3398@
+2021/05/05-15:56:09.724657 aed4 Compile date 1
+2021/05/05-15:56:09.724997 aed4 DB SUMMARY
+2021/05/05-15:56:09.725016 aed4 DB Session ID:  FWQBK7CEPV8AXHSVZX7K
+2021/05/05-15:56:09.729205 aed4 CURRENT file:  CURRENT
+2021/05/05-15:56:09.729231 aed4 IDENTITY file:  IDENTITY
+2021/05/05-15:56:09.729377 aed4 MANIFEST file:  MANIFEST-000362 size: 1389 Bytes
+2021/05/05-15:56:09.729402 aed4 SST files in ./alice-database\db dir, Total Num: 1, files: 000366.sst 
+2021/05/05-15:56:09.729432 aed4 Write Ahead Log file in ./alice-database\db: 000363.log size: 271546 ; 
+2021/05/05-15:56:09.729456 aed4                         Options.error_if_exists: 0
+2021/05/05-15:56:09.730034 aed4                       Options.create_if_missing: 1
+2021/05/05-15:56:09.730048 aed4                         Options.paranoid_checks: 1
+2021/05/05-15:56:09.730058 aed4                               Options.track_and_verify_wals_in_manifest: 0
+2021/05/05-15:56:09.730068 aed4                                     Options.env: 0000027D09EEAE80
+2021/05/05-15:56:09.730077 aed4                                      Options.fs: WinFS
+2021/05/05-15:56:09.730086 aed4                                Options.info_log: 0000027D0E563630
+2021/05/05-15:56:09.730095 aed4                Options.max_file_opening_threads: 16
+2021/05/05-15:56:09.730104 aed4                              Options.statistics: 0000000000000000
+2021/05/05-15:56:09.730112 aed4                               Options.use_fsync: 0
+2021/05/05-15:56:09.730120 aed4                       Options.max_log_file_size: 0
+2021/05/05-15:56:09.730128 aed4                  Options.max_manifest_file_size: 1073741824
+2021/05/05-15:56:09.730136 aed4                   Options.log_file_time_to_roll: 0
+2021/05/05-15:56:09.730144 aed4                       Options.keep_log_file_num: 1000
+2021/05/05-15:56:09.730151 aed4                    Options.recycle_log_file_num: 0
+2021/05/05-15:56:09.730159 aed4                         Options.allow_fallocate: 1
+2021/05/05-15:56:09.730167 aed4                        Options.allow_mmap_reads: 0
+2021/05/05-15:56:09.730175 aed4                       Options.allow_mmap_writes: 0
+2021/05/05-15:56:09.730183 aed4                        Options.use_direct_reads: 0
+2021/05/05-15:56:09.730193 aed4                        Options.use_direct_io_for_flush_and_compaction: 0
+2021/05/05-15:56:09.730201 aed4          Options.create_missing_column_families: 1
+2021/05/05-15:56:09.730209 aed4                              Options.db_log_dir: 
+2021/05/05-15:56:09.730217 aed4                                 Options.wal_dir: ./alice-database\db
+2021/05/05-15:56:09.730225 aed4                Options.table_cache_numshardbits: 6
+2021/05/05-15:56:09.730233 aed4                         Options.WAL_ttl_seconds: 0
+2021/05/05-15:56:09.730255 aed4                       Options.WAL_size_limit_MB: 0
+2021/05/05-15:56:09.730263 aed4                        Options.max_write_batch_group_size_bytes: 1048576
+2021/05/05-15:56:09.730272 aed4             Options.manifest_preallocation_size: 4194304
+2021/05/05-15:56:09.730294 aed4                     Options.is_fd_close_on_exec: 1
+2021/05/05-15:56:09.730302 aed4                   Options.advise_random_on_open: 1
+2021/05/05-15:56:09.730310 aed4                    Options.db_write_buffer_size: 0
+2021/05/05-15:56:09.730318 aed4                    Options.write_buffer_manager: 0000027D0D37EF20
+2021/05/05-15:56:09.730327 aed4         Options.access_hint_on_compaction_start: 1
+2021/05/05-15:56:09.730334 aed4  Options.new_table_reader_for_compaction_inputs: 0
+2021/05/05-15:56:09.730357 aed4           Options.random_access_max_buffer_size: 1048576
+2021/05/05-15:56:09.730365 aed4                      Options.use_adaptive_mutex: 0
+2021/05/05-15:56:09.730373 aed4                            Options.rate_limiter: 0000000000000000
+2021/05/05-15:56:09.730395 aed4     Options.sst_file_manager.rate_bytes_per_sec: 0
+2021/05/05-15:56:09.730403 aed4                       Options.wal_recovery_mode: 2
+2021/05/05-15:56:09.730442 aed4                  Options.enable_thread_tracking: 0
+2021/05/05-15:56:09.730454 aed4                  Options.enable_pipelined_write: 0
+2021/05/05-15:56:09.730463 aed4                  Options.unordered_write: 0
+2021/05/05-15:56:09.730471 aed4         Options.allow_concurrent_memtable_write: 1
+2021/05/05-15:56:09.730479 aed4      Options.enable_write_thread_adaptive_yield: 1
+2021/05/05-15:56:09.730486 aed4             Options.write_thread_max_yield_usec: 100
+2021/05/05-15:56:09.730495 aed4            Options.write_thread_slow_yield_usec: 3
+2021/05/05-15:56:09.730516 aed4                               Options.row_cache: None
+2021/05/05-15:56:09.730524 aed4                              Options.wal_filter: None
+2021/05/05-15:56:09.730532 aed4             Options.avoid_flush_during_recovery: 0
+2021/05/05-15:56:09.730540 aed4             Options.allow_ingest_behind: 0
+2021/05/05-15:56:09.730550 aed4             Options.preserve_deletes: 0
+2021/05/05-15:56:09.730559 aed4             Options.two_write_queues: 0
+2021/05/05-15:56:09.730567 aed4             Options.manual_wal_flush: 0
+2021/05/05-15:56:09.730575 aed4             Options.atomic_flush: 0
+2021/05/05-15:56:09.730583 aed4             Options.avoid_unnecessary_blocking_io: 0
+2021/05/05-15:56:09.730605 aed4                 Options.persist_stats_to_disk: 0
+2021/05/05-15:56:09.730612 aed4                 Options.write_dbid_to_manifest: 0
+2021/05/05-15:56:09.730620 aed4                 Options.log_readahead_size: 0
+2021/05/05-15:56:09.730628 aed4                 Options.file_checksum_gen_factory: Unknown
+2021/05/05-15:56:09.730636 aed4                 Options.best_efforts_recovery: 0
+2021/05/05-15:56:09.730658 aed4                Options.max_bgerror_resume_count: 2147483647
+2021/05/05-15:56:09.730666 aed4            Options.bgerror_resume_retry_interval: 1000000
+2021/05/05-15:56:09.730674 aed4             Options.allow_data_in_errors: 0
+2021/05/05-15:56:09.730682 aed4             Options.db_host_id: __hostname__
+2021/05/05-15:56:09.730690 aed4             Options.max_background_jobs: 2
+2021/05/05-15:56:09.730698 aed4             Options.max_background_compactions: -1
+2021/05/05-15:56:09.730706 aed4             Options.max_subcompactions: 1
+2021/05/05-15:56:09.730727 aed4             Options.avoid_flush_during_shutdown: 0
+2021/05/05-15:56:09.730735 aed4           Options.writable_file_max_buffer_size: 1048576
+2021/05/05-15:56:09.730743 aed4             Options.delayed_write_rate : 16777216
+2021/05/05-15:56:09.730750 aed4             Options.max_total_wal_size: 0
+2021/05/05-15:56:09.730758 aed4             Options.delete_obsolete_files_period_micros: 21600000000
+2021/05/05-15:56:09.730766 aed4                   Options.stats_dump_period_sec: 600
+2021/05/05-15:56:09.730774 aed4                 Options.stats_persist_period_sec: 600
+2021/05/05-15:56:09.730781 aed4                 Options.stats_history_buffer_size: 1048576
+2021/05/05-15:56:09.730789 aed4                          Options.max_open_files: -1
+2021/05/05-15:56:09.730796 aed4                          Options.bytes_per_sync: 0
+2021/05/05-15:56:09.730804 aed4                      Options.wal_bytes_per_sync: 0
+2021/05/05-15:56:09.730812 aed4                   Options.strict_bytes_per_sync: 0
+2021/05/05-15:56:09.730820 aed4       Options.compaction_readahead_size: 0
+2021/05/05-15:56:09.730841 aed4                  Options.max_background_flushes: -1
+2021/05/05-15:56:09.730849 aed4 Compression algorithms supported:
+2021/05/05-15:56:09.730871 aed4 	kZSTD supported: 0
+2021/05/05-15:56:09.730879 aed4 	kSnappyCompression supported: 0
+2021/05/05-15:56:09.730887 aed4 	kBZip2Compression supported: 0
+2021/05/05-15:56:09.730895 aed4 	kZlibCompression supported: 0
+2021/05/05-15:56:09.730902 aed4 	kLZ4Compression supported: 1
+2021/05/05-15:56:09.730910 aed4 	kXpressCompression supported: 0
+2021/05/05-15:56:09.730918 aed4 	kLZ4HCCompression supported: 1
+2021/05/05-15:56:09.730926 aed4 	kZSTDNotFinalCompression supported: 0
+2021/05/05-15:56:09.730942 aed4 Fast CRC32 supported: Supported on x86
+2021/05/05-15:56:09.732327 aed4 [WARN] [db/db_impl/db_impl_open.cc:1792] Persisting Option File error: OK
+2021/05/05-15:56:09.732341 aed4 [db/db_impl/db_impl.cc:460] Shutdown: canceling all background work
+2021/05/05-15:56:09.732394 aed4 [db/db_impl/db_impl.cc:638] Shutdown complete

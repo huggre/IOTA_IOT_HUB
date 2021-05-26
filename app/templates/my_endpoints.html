@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-8">
+		<table style="width:100%">
+			<tr>
+				<td><h1>my Endpoints</h1></td>
+				<td align="right"><a href="{{ url_for('new_endpoint') }}" class="btn btn-primary">New endpoint</a></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="assets">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-3">Name</th>
+				<th class="col-md-1">URL</th>
+                <th class="col-md-1">Enabled</th>
+				<th class="col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for endpoint in endpoints %}
+			<tr>
+				<td>{{ endpoint.id }}</td>
+                <td><a href="/endpoint_details/{{ endpoint.id }}">{{ endpoint.name }}</a></td>
+                <td>{{ endpoint.endpoint }}</td>
+                <td>{{ endpoint.enabled }}</td>
+				<td align="right"><a href="/edit_endpoint/{{ endpoint.id }}" class="btn btn-primary">Edit</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+
+{% endblock %}
+

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	<div class="row">
+		<div class="col-md-8">
+		<table style="width:100%">
+			<tr>
+				<td><h1>my Assets</h1></td>
+				<td align="right"><a href="{{ url_for('new_asset') }}" class="btn btn-primary">New asset</a></td>
+			</tr>
+		</table>
+		<table class="table table-striped" id="assets">
+			<thead>
+			<tr>
+				<th class="col-md-1">ID</th>
+				<th class="col-md-3">Name</th>
+				<th class="col-md-1">Price</th>
+                <th class="col-md-1">Time left</th>
+                <th class="col-md-1">Status</th>
+				<th class="col-md-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for asset in assets %}
+			<tr>
+				<td>{{ asset.id }}</td>
+                <td><a href="/asset_details/{{ asset.id }}">{{ asset.name }}</a></td>
+                <td>{{ asset.price }}</td>
+                <td>{{ asset.remaining_time|make_datetime }}</td> <!-- Uses a custom filter to convert seconds to datetime -->
+                {% if asset.remaining_time %}               
+                    <td><img src="{{url_for('static', filename='lightbulb.png')}}" align="middle" /></td>
+                {% else %}
+                    <td><img src="{{url_for('static', filename='lightbulb_off.png')}}" align="middle" /></td>
+                {% endif %}
+				<td align="right"><a href="/edit_asset/{{ asset.id }}" class="btn btn-primary">Edit</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+		</div>
+	</div>
+
+{% endblock %}
+

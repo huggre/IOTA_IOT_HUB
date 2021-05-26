@@ -56,7 +56,7 @@ except ValueError:
 
 
 # Get account balance
-def get_acc_bal():
+def get_acc_bal(account):
 
     #account = wallet_connect()
     #account = con_test()
@@ -75,7 +75,7 @@ def get_acc_bal():
     lbl_balance_txt.configure(text="{:10.6f}".format(available_balance_miota))
     
 # Get latest unused address
-def get_acc_addr():
+def get_acc_addr(account):
 
     #account = wallet_connect()
 
@@ -101,7 +101,7 @@ def get_asset_detail(key):
     asset_details = json.loads(txt_asset_details.get("1.0",END))
     return asset_details[key]
 
-def send_tokens():
+def send_tokens(account):
 
     # Get reciever address
     reciever_address = get_asset_detail('payment_address')
@@ -273,7 +273,7 @@ lbl_price_txt.grid(row=5, column=1, sticky="N,E,S,W")
 lbl_price_units = Label(frm_purchase, text="MIOTA")
 lbl_price_units.grid(row=5, column=2, sticky="N,E,S,W")
 
-btn_send = Button(frm_purchase, text="Send", command= lambda: send_tokens())
+btn_send = Button(frm_purchase, text="Send", command= lambda: send_tokens(account))
 btn_send.grid(row=6, column=0, columnspan=3, sticky="N,E,S,W")
 
 txt_purchase_log = Text(frm_purchase, height=7)
@@ -288,10 +288,10 @@ lbl_balance.grid(row=0, column=0, sticky="N,E,S,W")
 lbl_balance_txt = Label(frm_wallet, text="0.000000")
 lbl_balance_txt.grid(row=0, column=1, sticky="N,E,S,W")
 
-btn_refresh = Button(frm_wallet, text="Refresh", command= lambda: get_acc_bal())
+btn_refresh = Button(frm_wallet, text="Refresh", command= lambda: get_acc_bal(account))
 btn_refresh.grid(row=0, column=2, sticky="N,E,S,W")
 
-btn_receive = Button(frm_wallet, text="Receive", command= lambda: get_acc_addr())
+btn_receive = Button(frm_wallet, text="Receive", command= lambda: get_acc_addr(account))
 btn_receive.grid(row=1, column=0, columnspan=3, sticky="N,E,S,W")
 
 txt_receive_addr = Text(frm_wallet, height=5)
